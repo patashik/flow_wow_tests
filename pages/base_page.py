@@ -69,20 +69,36 @@ class BasePage():
         search_string = self.is_visible(*BasePageLocators.SEARCH_STRING)
         assert search_string.get_attribute("value") == search_request, 'No search request in search string'
 
-    def start_search_by_request(self, search_request):
-        search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
-        search_string.click()
-        search_string.send_keys(search_request)
-        search_string.send_keys(Keys.ENTER)
-        self.url_changed()
-        assert self.url_contains(f'query={quote(search_request)}'), 'Search did not start'
-
+    def list_suggestions(self):
+        suggestions_list = self.is_visible(*BasePageLocators.SUGGESTIONS_LIST)
+        assert suggestions_list, 'Did not list suggestions'
+        
+    def select_single_suggestion(self):
+        suggestion_item = self.is_clickable(*BasePageLocators.SUGGESTION_ITEM)
+        return suggestion_item
+    
     def should_switch_to_shops(self):
         switch_to_shops = self.is_visible(*BasePageLocators.SWITCH_TO_SHOPS)
         switch_to_shops.click()
         self.url_changed()
         assert self.url_contains("all-shops"), 'Did not switch to shops'
 
+    def insert_search_request(self, search_request):
+        search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
+        search_string.click()
+        search_string.send_keys(search_request)
+
+    def start_search_by_request(self, search_request):
+        search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
+        search_string.click()
+        search_string.send_keys(search_request)
+        search_string.send_keys(Keys.ENTER)
+        self.url_changed()
+        self.should_be_search_request_in_url(search_request)
+    
+    def should_be_search_request_in_url(self, search_request):
+        assert self.url_contains(f'query={quote(search_request)}'), 'Search did not start'
+    
     def url_changed(self, timeout=30):
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException).until(EC.url_changes((self.browser.current_url)))

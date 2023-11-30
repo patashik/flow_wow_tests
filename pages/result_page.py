@@ -21,10 +21,23 @@ class ResultPage(BasePage):
         shops_popups = self.is_visible(*ResultPageLocators.SHOPS_POPUPS)
         assert shops_popups, 'No shops popups'
     
-    def should_be_suggestions(self, search_request):
-        suggestion = self.is_visible(*ResultPageLocators.FIRST_SUGGESTION)
-        assert suggestion.text == f'{search_request}', 'No suggestions for search'
+    def should_be_recommendations(self, search_request):
+        first_recommendation = self.is_visible(*ResultPageLocators.RECOMMENDATION_FIRST)
+        assert first_recommendation.text == f'{search_request}', 'No recommendations for search'
 
-    def should_be_search_results_in_menu(self, search_request):
+    def select_single_recommendation(self):
+        second_recommendation = self.is_clickable(*ResultPageLocators.RECOMMENDATION_SECOND)
+        return second_recommendation
+
+    def should_be_search_request_in_fields(self, search_request):
+        self.should_be_search_request_in_url(search_request)
         self.should_be_search_request_in_search_string(search_request)
         self.should_be_sidebar_name(search_request)
+        self.should_be_recommendations(search_request)
+    
+    def search_by_recommendation(self):
+        recommendation = self.select_single_recommendation()
+        text = recommendation.text
+        recommendation.click()
+        self.url_changed()
+        self.should_be_search_request_in_fields(text)
