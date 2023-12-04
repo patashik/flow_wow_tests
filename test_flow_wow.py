@@ -84,4 +84,22 @@ class TestHappyPathChrome():
                     return True
                 else:
                     return False
-        
+    
+    @pytest.mark.search4
+    @allure.story("Search")
+    @allure.sub_suite("Search")
+    @allure.title("Search shop by text request in search string")
+    def test_search_product_by_text_request_in_search_string(self, browser_chrome):
+        search_request = "многороз"
+        link = "https://flowwow.com/kazan/all-products/" 
+        with allure.step("Step 1: open main page"):
+            main_page = BasePage(browser_chrome, link)
+            main_page.open()
+            main_page.accept_cookies()
+            #main_page.should_be_correct_response_status_code()
+        with allure.step("Step 2: insert text in string and activate search"):
+            main_page.start_search_by_request(search_request)
+        with allure.step("Step 3: show search results"):
+            result_page = ResultPage(browser_chrome, browser_chrome.current_url)
+            result_page.should_be_search_request_in_search_string(search_request)
+            result_page.should_be_not_found_message()
