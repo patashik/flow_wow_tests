@@ -9,7 +9,8 @@ class BasePageLocators():
     SEARCH_STRING = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[2]/div[1]/div[1]/div/div[2]/input')
     SEARCH_INPUT = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[2]/div[1]/div[1]/div/div[2]/label')
     SWITCH_TO_SHOPS = (By.XPATH, '//*[@id="js-switcher-shops"]')
-    
+    SEARCHED_SHOP_ITEM = (By.XPATH, '//*[@id="searched-shops"]/li/a')
+
 class MainPageLocators():
     ADDRESS_BUTTON = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div/div/div[2]')
 
