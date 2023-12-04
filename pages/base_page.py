@@ -4,6 +4,7 @@ from selenium.common.exceptions import TimeoutException
 from .locators import BasePageLocators
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 import requests
 import time
 import urllib.parse
@@ -65,17 +66,30 @@ class BasePage():
         element = WebDriverWait(self.browser, timeout, 1).until(EC.visibility_of_element_located((how, what)))
         return element
 
+    def insert_search_request(self, search_request):
+        search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
+        symbols = list(search_request)
+        for i in symbols:
+            search_string.click()
+            search_string.send_keys(i)
+    
+    def select_popular_request(self):
+        search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
+        search_string.click()
+        popular_requests_list = self.is_visible(*BasePageLocators.POPULAR_REQUESTS_LIST)
+        popular_request_first = self.is_clickable(*BasePageLocators.POPULAR_REQUESTS_FIRST)
+        return popular_request_first
+
+    def select_recommendation(self):
+        recommendation = self.is_clickable(*BasePageLocators.RECOMMENDATION_SECOND)
+        return recommendation
+
     def should_be_search_request_in_search_string(self, search_request):
         search_string = self.is_visible(*BasePageLocators.SEARCH_STRING)
         assert search_string.get_attribute("value") == search_request, 'No search request in search string'
 
-    def list_suggestions(self):
-        suggestions_list = self.is_visible(*BasePageLocators.SUGGESTIONS_LIST)
-        assert suggestions_list, 'Did not list suggestions'
-        
-    def select_single_suggestion(self):
-        suggestion_item = self.is_clickable(*BasePageLocators.SUGGESTION_ITEM)
-        return suggestion_item
+    def should_be_search_request_in_url(self, search_request):
+        assert self.url_contains(f'query={quote(search_request)}'), 'Search did not start'
     
     def should_switch_to_shops(self):
         switch_to_shops = self.is_visible(*BasePageLocators.SWITCH_TO_SHOPS)
@@ -83,21 +97,26 @@ class BasePage():
         self.url_changed()
         assert self.url_contains("all-shops"), 'Did not switch to shops'
 
-    def insert_search_request(self, search_request):
-        search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
-        search_string.click()
-        search_string.send_keys(search_request)
-
+    def start_search_by_popular_request(self, popular_request, popular_request_text):
+        popular_request.click()
+        self.url_changed()
+        self.should_be_search_request_in_url(popular_request_text)
+    
     def start_search_by_request(self, search_request):
         search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
+        symbols = list(search_request)
+        for i in symbols:
+            search_string.click()
+            search_string.send_keys(i)
         search_string.click()
-        search_string.send_keys(search_request)
         search_string.send_keys(Keys.ENTER)
         self.url_changed()
         self.should_be_search_request_in_url(search_request)
     
-    def should_be_search_request_in_url(self, search_request):
-        assert self.url_contains(f'query={quote(search_request)}'), 'Search did not start'
+    def start_search_by_text_and_recommendation(self, recommendation, recommendation_text):
+        recommendation.click()
+        self.url_changed()
+        self.should_be_search_request_in_url(recommendation_text)
     
     def url_changed(self, timeout=30):
         try:

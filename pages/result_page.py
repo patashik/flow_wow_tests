@@ -9,9 +9,20 @@ import requests
 import time
 
 class ResultPage(BasePage):
-    def should_be_sidebar_name(self, search_request):
-        sidebar_name = self.is_visible(*ResultPageLocators.SIDEBAR_NAME)
-        assert sidebar_name.text == f'Результаты по запросу «{search_request}»', 'No search request in sidebar'
+    def should_be_any_result_message(self):
+        assert self.any_of(*ResultPageLocators.FOUND_MESSAGE, *ResultPageLocators.NOT_FOUND_MESSAGE)
+    
+    def should_be_found_message(self):
+        found_message = self.is_visible(*ResultPageLocators.FOUND_MESSAGE)
+        assert found_message, 'Result message is missing'
+    
+    def should_be_not_found_message(self):
+        not_found_message = self.is_visible(*ResultPageLocators.NOT_FOUND_MESSAGE)
+        assert not_found_message, 'Result message is missing'
+
+    def should_be_recommendation_message(self, search_request):
+        recommendation_message = self.is_visible(*ResultPageLocators.RECOMMENDATION_MESSAGE)
+        assert recommendation_message.text == f'{search_request}'
     
     def should_be_products_popups(self):
         products_popups = self.is_visible(*ResultPageLocators.PRODUCTS_POPUPS)
