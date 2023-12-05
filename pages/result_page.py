@@ -10,7 +10,7 @@ import time
 
 class ResultPage(BasePage):
     def should_be_any_result_message(self):
-        assert self.any_of(*ResultPageLocators.FOUND_MESSAGE, *ResultPageLocators.NOT_FOUND_MESSAGE)
+        assert self.any_of(*ResultPageLocators.FOUND_MESSAGE, *ResultPageLocators.NOT_FOUND_MESSAGE), 'Incorrect search'
     
     def should_be_found_message(self):
         found_message = self.is_visible(*ResultPageLocators.FOUND_MESSAGE)

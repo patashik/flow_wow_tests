@@ -1,11 +1,16 @@
 from selenium.webdriver.common.by import By
 
 class BasePageLocators():
+    ADDRESS_BUTTON = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div/div/div[2]/span[1]')
+    ADDRESS_FORM = (By.XPATH, '//*[@id="AddressModal"]/div/div')
+    ADDRESS_INPUT = (By.XPATH, '//*[@id="AddressModal"]/div/div/div/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/input')
+    ADDRESS_LIST = (By.XPATH, '//*[@id="AddressModal"]/div/div/div/div[2]/div[1]/div[2]/div[1]/div[2]/div/section/ul')
     COOKIE_FORM = (By.XPATH, '//*[@id="grid"]/div[5]/div')
     OK_COOKIE_BUTTON = (By.XPATH, '//*[@id="grid"]/div[5]/div/div[3]/div[2]/button')
     POPULAR_REQUESTS_LIST = (By.XPATH, '//*[@id="search-popular-requests"]')
     POPULAR_REQUESTS_FIRST = (By.XPATH, '//*[@id="search-popular-requests"]/li[1]')
     RECOMMENDATION_SECOND = (By.XPATH, '//*[@id="searched-results"]/li[2]/div')
+    RECOMMENDATION_SHOP = (By.XPATH, '//*[@id="searched-shops"]/li[1]/a')
     SEARCH_STRING = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[2]/div[1]/div[1]/div/div[2]/input')
     SEARCH_INPUT = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[2]/div[1]/div[1]/div/div[2]/label')
     SWITCH_TO_SHOPS = (By.XPATH, '//*[@id="js-switcher-shops"]')
