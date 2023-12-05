@@ -73,6 +73,21 @@ class BasePage():
             search_string.click()
             search_string.send_keys(i)
     
+    def insert_address(self, address):
+        address_input = self.is_clickable(*BasePageLocators.ADDRESS_INPUT)
+        address_input.click()
+        address_input.send_keys(address)
+    
+    def select_address_from_list():
+        self.is_visible(*BasePageLocators.ADDRESS_LIST)
+
+
+    def open_address_form(self):
+        address_button = self.is_clickable(*BasePageLocators.ADDRESS_BUTTON)
+        address_button.click()
+        address_form = self.is_clickable(*BasePageLocators.ADDRESS_FORM)
+        assert address_form, 'Did not open address form'
+
     def select_popular_request(self):
         search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
         search_string.click()
@@ -84,6 +99,11 @@ class BasePage():
         recommendation = self.is_clickable(*BasePageLocators.RECOMMENDATION_SECOND)
         return recommendation
 
+    def select_shop_recommendation(self):
+        recommendation = self.is_clickable(*BasePageLocators.RECOMMENDATION_SHOP)
+        #recommendation.click()
+        return recommendation
+
     def should_be_search_request_in_search_string(self, search_request):
         search_string = self.is_visible(*BasePageLocators.SEARCH_STRING)
         assert search_string.get_attribute("value") == search_request, 'No search request in search string'
@@ -91,6 +111,9 @@ class BasePage():
     def should_be_search_request_in_url(self, search_request):
         assert self.url_contains(f'query={quote(search_request)}'), 'Search did not start'
     
+    def should_be_shop_in_url(self, shop_link):
+        assert self.url_to_be(shop_link), 'Shop page incorrect'
+
     def should_switch_to_shops(self):
         switch_to_shops = self.is_visible(*BasePageLocators.SWITCH_TO_SHOPS)
         switch_to_shops.click()
@@ -118,6 +141,10 @@ class BasePage():
         self.url_changed()
         self.should_be_search_request_in_url(recommendation_text)
     
+    def switch_to_shop_window(self):
+        shop_window = self.browser.window_handles[1]
+        self.browser.switch_to.window(shop_window)
+
     def url_changed(self, timeout=30):
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException).until(EC.url_changes((self.browser.current_url)))
