@@ -47,6 +47,34 @@ class BasePage():
             return False
         return True
 
+    def attribute_text_is(self, locator, attribute, text):
+        try:
+            WebDriverWait(self.browser, timeout, 1, TimeoutException).until_not(EC.text_to_be_present_in_element_attribute(locator, attribute, f'{text}'))
+        except TimeoutException:
+            return False
+        return True
+
+    def element_text_is(self, how, what, text, timeout=30):
+        try:
+            WebDriverWait(self.browser, timeout, 1, TimeoutException).until(EC.text_to_be_present_in_element((how, what), f'{text}'))
+        except TimeoutException:
+            return False
+        return True
+    
+    def fill_detailed_address_form(self, house, office, comment):
+        house_form = self.is_clickable(*BasePageLocators.ADDRESS_HOUSE)
+        house_form.click()
+        house_form.send_keys(house)
+        office_form = self.is_clickable(*BasePageLocators.ADDRESS_OFFICE)
+        office_form.click()
+        office_form.send_keys(office)
+        comment_form = self.is_clickable(*BasePageLocators.ADDRESS_COMMENT)
+        comment_form.click()
+        comment_form.send_keys(comment)
+        accept_button = self.is_clickable(*BasePageLocators.ADDRESS_ACCEPT_BUTTON)
+        accept_button.click()
+        self.has_disappeared(*BasePageLocators.ADDRESS_FORM_DETAILED)
+    
     def has_disappeared(self, how, what, timeout=10):
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException).until_not(EC.presence_of_element_located((how, what)))
@@ -78,15 +106,19 @@ class BasePage():
         address_input.click()
         address_input.send_keys(address)
     
-    def select_address_from_list():
-        self.is_visible(*BasePageLocators.ADDRESS_LIST)
-
-
     def open_address_form(self):
         address_button = self.is_clickable(*BasePageLocators.ADDRESS_BUTTON)
         address_button.click()
         address_form = self.is_clickable(*BasePageLocators.ADDRESS_FORM)
         assert address_form, 'Did not open address form'
+    
+    def select_address_from_list(self, address):
+        self.is_visible(*BasePageLocators.ADDRESS_LIST)
+        self.element_text_is(*BasePageLocators.ADDRESS_FIRST_ITEM, address)
+        address_item = self.is_clickable(*BasePageLocators.ADDRESS_FIRST_ITEM)
+        #print(address_item.text)
+        #assert f'{address}' in address_item.text, "No Lenin"
+        address_item.click()
 
     def select_popular_request(self):
         search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
@@ -111,6 +143,12 @@ class BasePage():
     def should_be_search_request_in_url(self, search_request):
         assert self.url_contains(f'query={quote(search_request)}'), 'Search did not start'
     
+    def should_be_setted_address(self, address, house):
+        setted_address = self.is_visible(*BasePageLocators.ADDRESS_BUTTON)
+        print(setted_address.text)
+        assert f'Казань, {address}, {house}' in setted_address.text, 'Setted address incorrect'
+        assert setted_address.text == f'Казань, {address}, {house}', 'Setted address incorrect'
+        
     def should_be_shop_in_url(self, shop_link):
         assert self.url_to_be(shop_link), 'Shop page incorrect'
 

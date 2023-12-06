@@ -18,8 +18,8 @@ class TestHappyPathChrome():
     @pytest.mark.search1
     @allure.story("Search")
     @allure.sub_suite("Search")
-    @allure.title("Search product by request in search string")
-    def test_search_product_by_request_in_search_string(self, browser_chrome):
+    @allure.title("Search product by text")
+    def test_search_product_by_text(self, browser_chrome):
         search_request = "чак-чак"
         link = "https://flowwow.com/kazan/all-products/" 
         with allure.step("Step 1: open main page"):
@@ -122,13 +122,21 @@ class TestHappyPathChrome():
     @pytest.mark.search6
     @allure.story("Address")
     @allure.sub_suite("Address")
-    @allure.title("Select address by text")
-    def test_select_address_by_text(self, browser_chrome):
-        address = "ленина 1"
+    @allure.title("Set address")
+    def test_set_address(self, browser_chrome):
+        address = "улица Ленина"
+        house = "1"
+        office = "1"
+        comment = "test"
         link = "https://flowwow.com/kazan/all-products/" 
         with allure.step("Step 1: open main page"):
             main_page = BasePage(browser_chrome, link)
             main_page.open()
             main_page.accept_cookies()
-        with allure.step("Step 2: insert text in string and activate search"):
+        with allure.step("Step 2: set address using dropdown list"):
             main_page.open_address_form()
+            main_page.insert_address(address)
+            main_page.select_address_from_list(address)
+        with allure.step("Step 3: set detailed address"):
+            main_page.fill_detailed_address_form(house, office, comment)
+            main_page.should_be_setted_address(address, house)

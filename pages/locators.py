@@ -2,9 +2,15 @@ from selenium.webdriver.common.by import By
 
 class BasePageLocators():
     ADDRESS_BUTTON = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div/div/div[2]/span[1]')
+    ADDRESS_ACCEPT_BUTTON = (By.XPATH, '//*[@id="AddressStreetModal"]/div/div/div/div[4]/button')
+    ADDRESS_COMMENT = (By.XPATH, '//*[@id="AddressStreetModal"]/div/div/div/div[3]/div[2]/div[2]/textarea')
+    ADDRESS_FIRST_ITEM = (By.XPATH, '//*[@id="AddressModal"]/div/div/div/div[2]/div[1]/div[2]/div[1]/div[2]/div/section/ul/li[1]')
     ADDRESS_FORM = (By.XPATH, '//*[@id="AddressModal"]/div/div')
+    ADDRESS_FORM_DETAILED = (By.XPATH, '/*[@id="AddressStreetModal"]/div/div')
+    ADDRESS_HOUSE = (By.XPATH, '//*[@id="AddressStreetModal"]/div/div/div/div[3]/div[1]/div[1]/div[1]/input')
     ADDRESS_INPUT = (By.XPATH, '//*[@id="AddressModal"]/div/div/div/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/input')
     ADDRESS_LIST = (By.XPATH, '//*[@id="AddressModal"]/div/div/div/div[2]/div[1]/div[2]/div[1]/div[2]/div/section/ul')
+    ADDRESS_OFFICE = (By.XPATH, '//*[@id="AddressStreetModal"]/div/div/div/div[3]/div[1]/div[2]/div/input')
     COOKIE_FORM = (By.XPATH, '//*[@id="grid"]/div[5]/div')
     OK_COOKIE_BUTTON = (By.XPATH, '//*[@id="grid"]/div[5]/div/div[3]/div[2]/button')
     POPULAR_REQUESTS_LIST = (By.XPATH, '//*[@id="search-popular-requests"]')
