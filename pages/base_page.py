@@ -75,6 +75,13 @@ class BasePage():
         accept_button.click()
         self.has_disappeared(*BasePageLocators.ADDRESS_FORM_DETAILED)
     
+    def go_to_category_page(self):
+        category_link = "https://flowwow.com/kazan/"
+        category = self.is_clickable(*BasePageLocators.CATEGORY_FLOWERS)
+        category.click()
+        self.url_changed()
+        assert self.url_to_be(category_link), 'Did not open category page'
+
     def has_disappeared(self, how, what, timeout=10):
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException).until_not(EC.presence_of_element_located((how, what)))
