@@ -11,6 +11,7 @@ class BasePageLocators():
     ADDRESS_INPUT = (By.XPATH, '//*[@id="AddressModal"]/div/div/div/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/input')
     ADDRESS_LIST = (By.XPATH, '//*[@id="AddressModal"]/div/div/div/div[2]/div[1]/div[2]/div[1]/div[2]/div/section/ul')
     ADDRESS_OFFICE = (By.XPATH, '//*[@id="AddressStreetModal"]/div/div/div/div[3]/div[1]/div[2]/div/input')
+    CATEGORY_FLOWERS = (By.XPATH, '//*[@id="grid"]/section/div/div[3]/section/div[2]/div[1]/div/div/a[1]')
     COOKIE_FORM = (By.XPATH, '//*[@id="grid"]/div[5]/div')
     OK_COOKIE_BUTTON = (By.XPATH, '//*[@id="grid"]/div[5]/div/div[3]/div[2]/button')
     POPULAR_REQUESTS_LIST = (By.XPATH, '//*[@id="search-popular-requests"]')

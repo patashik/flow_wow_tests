@@ -140,3 +140,35 @@ class TestHappyPathChrome():
         with allure.step("Step 3: set detailed address"):
             main_page.fill_detailed_address_form(house, office, comment)
             main_page.should_be_setted_address(address, house)
+
+    @pytest.mark.cart
+    @allure.story("Cart")
+    @allure.sub_suite("Cart")
+    @allure.title("Add product to cart")
+    def test_set_address(self, browser_chrome):
+        address = "улица Ленина"
+        house = "1"
+        office = "1"
+        comment = "test"
+        link = "https://flowwow.com/kazan/all-products/" 
+        with allure.step("Step 1: open main page"):
+            main_page = BasePage(browser_chrome, link)
+            main_page.open()
+            main_page.accept_cookies()
+        with allure.step("Step 2: open category page"):
+            main_page.go_to_category_page()
+            category_page = CategoryPage(browser_chrome, browser_chrome.current_url)
+        with allure.step("Step 3: select product subcategory"):
+            category_page.select_subcategory()
+            category_page.should_be_selected_subcategory()
+        with allure.step("Step 4: select product"):
+            category_page.select_product()
+            category_page.should_open_product_card()
+        with allure.step("Step 5: add product to cart"):
+            category_page.add_to_cart()
+            category_page.fill_address_form(address)
+            category_page.should_go_shop_page()
+            shop_page = ShopPage(browser_chrome, browser_chrome.current_url)
+            shop_page.should_be_cart()
+        with allure.step("Step 6: make order"):
+            shop_page.make_order()
