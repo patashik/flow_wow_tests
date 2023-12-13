@@ -2,7 +2,8 @@ from selenium.webdriver.common.by import By
 
 class BasePageLocators():
     ADDRESS_BUTTON = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div/div/div[2]/span[1]')
-    ADDRESS_ACCEPT_BUTTON = (By.XPATH, '//*[@id="AddressStreetModal"]/div/div/div/div[4]/button')
+    ADDRESS_ACCEPT_BUTTON_DETAILED = (By.XPATH, '//*[@id="AddressStreetModal"]/div/div/div/div[4]/button')
+    ADDRESS_ACCEPT_BUTTON = (By.XPATH, '//*[@id="AddressModal"]/div/div/div/div[2]/div[1]/div[2]/div[2]/div/button')
     ADDRESS_COMMENT = (By.XPATH, '//*[@id="AddressStreetModal"]/div/div/div/div[3]/div[2]/div[2]/textarea')
     ADDRESS_FIRST_ITEM = (By.XPATH, '//*[@id="AddressModal"]/div/div/div/div[2]/div[1]/div[2]/div[1]/div[2]/div/section/ul/li[1]')
     ADDRESS_FORM = (By.XPATH, '//*[@id="AddressModal"]/div/div')
@@ -27,6 +28,14 @@ class MainPageLocators():
     ADDRESS_BUTTON = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div/div/div[2]')
 
 class CategoryPageLocators():
+    ADD_TO_CART_BUTTON = (By.XPATH, '//*[@id="ProductDetailModal"]/div/div/div/div/div/div/div[1]/div[2]/div[3]/div/div[2]/div[1]/button')
+    PAGE_TITLE = (By.XPATH, '//*[@id="grid"]/section/div/div/div[2]/h1/span')
+    PRODUCT_CARD_TITLE = (By.XPATH, '//*[@id="ProductDetailModal"]/div/div/div/div/div/div/div[1]/div[2]/div[1]/div[1]/div/h1')
+    PRODUCT_FIRST = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[2]/div/div[1]/div/article[1]')
+    PRODUCT_FIRST_NAME = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[2]/div/div[1]/div/article[1]/a/div/div[2]/div[1]')
+    PRODUCT_FIRST_LINK = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[2]/div/div[1]/div/article[1]/a')
+    SUBCATEGORY_MONOBOUQETS = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[1]/div/div[1]')
+    SUBCATEGORY_MONOBOUQETS_LINK = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[1]/div/div[1]/a')
     SWITCH_TO_PRODUCTS = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[1]/div/div[2]/span[1]')
     SWITCH_TO_SHOPS = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[1]/div[1]/div[2]/span[2]')
     
@@ -36,3 +45,9 @@ class ResultPageLocators():
     PRODUCTS_POPUPS = (By.XPATH, '//*[@id="grid"]/section/div/div/div[3]/div[2]/div[2]/div/div[1]/div')
     RECOMMENDATION_MESSAGE = (By.XPATH, '//*[@id="grid"]/section/div/div/div[3]/div[1]/div[1]/b')
     SIMILAR_TAB = (By.XPATH, '//*[@id="grid"]/section/div/div/div[3]/div[2]/div[1]')
+
+class ShopPageLocators():
+    CART_FORM = (By.XPATH, '//*[@id="main-view"]/div/div[2]/div/div[2]/div[2]/div')
+    LOGIN_FORM = (By.XPATH, '//*[@id="js-auth-dropdown"]')
+    MAKE_ORDER_BUTTON = (By.XPATH, '//*[@id="main-view"]/div/div[2]/div/div[2]/div[2]/div/a')
+    PRODUCT_NAME = (By.XPATH, '//*[@id="js-cart-products"]/div/div[2]/div[1]')

@@ -5,6 +5,7 @@ from .pages.base_page import BasePage
 from .pages.main_page import MainPage
 from .pages.result_page import ResultPage
 from .pages.shop_page import ShopPage
+from .pages.category_page import CategoryPage
 import allure
 import allpairspy
 from allpairspy import AllPairs
@@ -145,30 +146,30 @@ class TestHappyPathChrome():
     @allure.story("Cart")
     @allure.sub_suite("Cart")
     @allure.title("Add product to cart")
-    def test_set_address(self, browser_chrome):
-        address = "улица Ленина"
-        house = "1"
-        office = "1"
-        comment = "test"
+    def test_add_product_to_cart(self, browser_chrome):
+        address = "улица Ленина, 1"
         link = "https://flowwow.com/kazan/all-products/" 
         with allure.step("Step 1: open main page"):
             main_page = BasePage(browser_chrome, link)
             main_page.open()
             main_page.accept_cookies()
-        with allure.step("Step 2: open category page"):
+        with allure.step("Step 2: open flowers category page"):
             main_page.go_to_category_page()
             category_page = CategoryPage(browser_chrome, browser_chrome.current_url)
-        with allure.step("Step 3: select product subcategory"):
-            category_page.select_subcategory()
-            category_page.should_be_selected_subcategory()
+        with allure.step("Step 3: switch to product subcategory"):
+            category_page.switch_to_subcategory()
         with allure.step("Step 4: select product"):
-            category_page.select_product()
-            category_page.should_open_product_card()
+            product_name = category_page.select_product()
         with allure.step("Step 5: add product to cart"):
             category_page.add_to_cart()
-            category_page.fill_address_form(address)
-            category_page.should_go_shop_page()
+        with allure.step("Step 6: set address"):
+            category_page.fill_short_address_form(address)
+        with allure.step("Step 7: go to shop page with cart"):
+            category_page.url_changed()
+            category_page.go_to_shop_page()
             shop_page = ShopPage(browser_chrome, browser_chrome.current_url)
-            shop_page.should_be_cart()
-        with allure.step("Step 6: make order"):
-            shop_page.make_order()
+            shop_page.should_be_cart(product_name)
+        with allure.step("Step 8: go to make order"):
+            shop_page.go_to_make_order()
+        with allure.step("Step 9: log in"):
+            shop_page.log_in()

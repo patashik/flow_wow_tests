@@ -61,6 +61,13 @@ class BasePage():
             return False
         return True
     
+    def fill_short_address_form(self, address):
+        self.insert_address(address)
+        self.select_address_from_list(address)
+        accept_button = self.is_clickable(*BasePageLocators.ADDRESS_ACCEPT_BUTTON)
+        accept_button.click()
+        self.has_disappeared(*BasePageLocators.ADDRESS_FORM)
+
     def fill_detailed_address_form(self, house, office, comment):
         house_form = self.is_clickable(*BasePageLocators.ADDRESS_HOUSE)
         house_form.click()
@@ -71,7 +78,7 @@ class BasePage():
         comment_form = self.is_clickable(*BasePageLocators.ADDRESS_COMMENT)
         comment_form.click()
         comment_form.send_keys(comment)
-        accept_button = self.is_clickable(*BasePageLocators.ADDRESS_ACCEPT_BUTTON)
+        accept_button = self.is_clickable(*BasePageLocators.ADDRESS_ACCEPT_BUTTON_DETAILED)
         accept_button.click()
         self.has_disappeared(*BasePageLocators.ADDRESS_FORM_DETAILED)
     
@@ -81,6 +88,11 @@ class BasePage():
         category.click()
         self.url_changed()
         assert self.url_to_be(category_link), 'Did not open category page'
+
+    def go_to_shop_page(self):
+        shop_link = "https://flowwow.com/shop/"
+        #self.url_changed()
+        assert self.url_contains(shop_link), 'Did not open shop page'
 
     def has_disappeared(self, how, what, timeout=10):
         try:
