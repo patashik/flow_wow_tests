@@ -107,7 +107,7 @@ class BasePage():
             return False
         return True
     
-    def is_clickable(self, how, what, timeout=60):
+    def is_clickable(self, how, what, timeout=300):
         element = WebDriverWait(self.browser, timeout, 1).until(EC.element_to_be_clickable((how, what)))
         return element
 

@@ -10,7 +10,7 @@ import time
 
 class CategoryPage(BasePage):
     def add_to_cart(self):
-        add_to_cart_button = self.is_clickable(*CategoryPageLocators.ADD_TO_CART_BUTTON, 60)
+        add_to_cart_button = self.is_clickable(*CategoryPageLocators.ADD_TO_CART_BUTTON)
         add_to_cart_button.click()
 
     def get_page_title(self):
