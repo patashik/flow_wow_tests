@@ -7,8 +7,6 @@ from .pages.result_page import ResultPage
 from .pages.shop_page import ShopPage
 from .pages.category_page import CategoryPage
 import allure
-import allpairspy
-from allpairspy import AllPairs
 
 @pytest.mark.chrome
 @allure.epic("Chrome tests for Main page")
@@ -37,7 +35,7 @@ class TestHappyPathChrome():
             result_page.should_be_recommendation_message(search_request)
             result_page.should_be_products_popups()
 
-    @pytest.mark.search
+    @pytest.mark.pop
     @allure.story("Search")
     @allure.sub_suite("Search")
     @allure.title("Search product by popular request")
@@ -59,7 +57,7 @@ class TestHappyPathChrome():
             result_page.should_be_recommendation_message(popular_request_text)
             result_page.should_be_products_popups()
 
-    @pytest.mark.search
+    @pytest.mark.rec
     @allure.story("Search")
     @allure.sub_suite("Search")
     @allure.title("Search product by text and recommendation")
@@ -81,7 +79,7 @@ class TestHappyPathChrome():
             result_page.should_be_search_request_in_search_string(recommendation_text)
             result_page.should_be_any_result_message()
                 
-    @pytest.mark.search
+    @pytest.mark.shop
     @allure.story("Search")
     @allure.sub_suite("Search")
     @allure.title("Search shop by name")
@@ -161,6 +159,7 @@ class TestHappyPathChrome():
         with allure.step("Step 4: select product"):
             product_name = category_page.select_product()
         with allure.step("Step 5: add product to cart"):
+            time.sleep(3)
             category_page.add_to_cart()
         with allure.step("Step 6: set address"):
             category_page.fill_short_address_form(address)
