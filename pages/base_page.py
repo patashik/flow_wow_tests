@@ -25,7 +25,7 @@ class BasePage():
             status_code = requests.get(self.browser.current_url).status_code
             print(self.browser.current_url)
             print(status_code)
-            assert status_code == code, "Status not correct"
+            assert status_code == code, "HTTP status code not correct"
         except TimeoutException:
             return False
         return True
@@ -89,10 +89,16 @@ class BasePage():
         self.url_changed()
         assert self.url_to_be(category_link), 'Did not open category page'
 
-    def go_to_shop_page(self):
-        shop_link = "https://flowwow.com/shop/"
-        #self.url_changed()
-        assert self.url_contains(shop_link), 'Did not open shop page'
+    def go_to_main_page(self):
+        main_page_url = "https://flowwow.com/kazan/all-products/" 
+        logo_button = self.is_clickable(*BasePageLocators.LOGO_BUTTON)
+        logo_button.click()
+        self.url_changed()
+        assert self.url_to_be(main_page_url), 'Did not open main page'
+    
+    def click_logo(self):
+        logo_button = self.is_clickable(*BasePageLocators.LOGO_BUTTON)
+        logo_button.click()
 
     def has_disappeared(self, how, what, timeout=10):
         try:
@@ -101,7 +107,7 @@ class BasePage():
             return False
         return True
     
-    def is_clickable(self, how, what, timeout=10):
+    def is_clickable(self, how, what, timeout=60):
         element = WebDriverWait(self.browser, timeout, 1).until(EC.element_to_be_clickable((how, what)))
         return element
 
@@ -125,12 +131,23 @@ class BasePage():
         address_input.click()
         address_input.send_keys(address)
     
+    def maximize_window(self):
+        self.browser.maximize_window()
+
     def open_address_form(self):
         address_button = self.is_clickable(*BasePageLocators.ADDRESS_BUTTON)
         address_button.click()
         address_form = self.is_clickable(*BasePageLocators.ADDRESS_FORM)
         assert address_form, 'Did not open address form'
     
+    def open_shop_page(self):
+        shop_link = "https://flowwow.com/shop/"
+        #self.url_changed()
+        assert self.url_contains(shop_link), 'Did not open shop page'
+    
+    def resize_window(self, width, height):
+        self.browser.set_window_size(width, height)
+
     def select_address_from_list(self, address):
         self.is_visible(*BasePageLocators.ADDRESS_LIST)
         self.element_text_is(*BasePageLocators.ADDRESS_FIRST_ITEM, address)
@@ -165,7 +182,6 @@ class BasePage():
     def should_be_setted_address(self, address, house):
         setted_address = self.is_visible(*BasePageLocators.ADDRESS_BUTTON)
         print(setted_address.text)
-        assert f'Казань, {address}, {house}' in setted_address.text, 'Setted address incorrect'
         assert setted_address.text == f'Казань, {address}, {house}', 'Setted address incorrect'
         
     def should_be_shop_in_url(self, shop_link):

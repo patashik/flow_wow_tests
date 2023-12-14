@@ -37,7 +37,7 @@ class TestHappyPathChrome():
             result_page.should_be_recommendation_message(search_request)
             result_page.should_be_products_popups()
 
-    @pytest.mark.search2
+    @pytest.mark.search
     @allure.story("Search")
     @allure.sub_suite("Search")
     @allure.title("Search product by popular request")
@@ -59,7 +59,7 @@ class TestHappyPathChrome():
             result_page.should_be_recommendation_message(popular_request_text)
             result_page.should_be_products_popups()
 
-    @pytest.mark.search3
+    @pytest.mark.search
     @allure.story("Search")
     @allure.sub_suite("Search")
     @allure.title("Search product by text and recommendation")
@@ -81,11 +81,11 @@ class TestHappyPathChrome():
             result_page.should_be_search_request_in_search_string(recommendation_text)
             result_page.should_be_any_result_message()
                 
-    @pytest.mark.search4
+    @pytest.mark.search
     @allure.story("Search")
     @allure.sub_suite("Search")
-    @allure.title("Search shop by name in search string")
-    def test_search_product_by_name_in_search_string(self, browser_chrome):
+    @allure.title("Search shop by name")
+    def test_search_shop_by_name(self, browser_chrome):
         search_request = "многороз"
         link = "https://flowwow.com/kazan/all-products/" 
         with allure.step("Step 1: open main page"):
@@ -99,11 +99,11 @@ class TestHappyPathChrome():
             result_page.should_be_search_request_in_search_string(search_request)
             result_page.should_be_not_found_message()
 
-    @pytest.mark.search5
+    @pytest.mark.search
     @allure.story("Search")
     @allure.sub_suite("Search")
-    @allure.title("Search shop by name and recommendation in search string")
-    def test_search_product_by_name_and_recommendation_in_search_string(self, browser_chrome):
+    @allure.title("Search shop by name and recommendation")
+    def test_search_product_by_name_and_recommendation(self, browser_chrome):
         search_request = "многороз"
         link = "https://flowwow.com/kazan/all-products/" 
         with allure.step("Step 1: open main page"):
@@ -120,7 +120,7 @@ class TestHappyPathChrome():
             shop_page = ShopPage(browser_chrome, browser_chrome.current_url)
             shop_page.should_be_shop_in_url(shop_link)
 
-    @pytest.mark.search6
+    @pytest.mark.address
     @allure.story("Address")
     @allure.sub_suite("Address")
     @allure.title("Set address")
@@ -166,10 +166,70 @@ class TestHappyPathChrome():
             category_page.fill_short_address_form(address)
         with allure.step("Step 7: go to shop page with cart"):
             category_page.url_changed()
-            category_page.go_to_shop_page()
+            category_page.open_shop_page()
             shop_page = ShopPage(browser_chrome, browser_chrome.current_url)
             shop_page.should_be_cart(product_name)
         with allure.step("Step 8: go to make order"):
             shop_page.go_to_make_order()
         with allure.step("Step 9: log in"):
             shop_page.log_in()
+
+    @allure.story("Resize window")
+    @allure.sub_suite("Resize window")
+    @allure.title("Resize window on main page")
+    def test_resize_main_page(self, browser_chrome):
+        link = "https://flowwow.com/kazan/all-products/" 
+        with allure.step("Step 1: open main page"):
+            main_page = MainPage(browser_chrome, link)
+            main_page.open()
+            main_page.accept_cookies()
+            #main_page.should_be_correct_response_status_code()
+        with allure.step("Step 2: resize window"):
+            width = 800
+            height = 600
+            main_page.resize_window(width, height)
+        with allure.step("Step 3: maximize window"):
+            main_page.maximize_window()
+        with allure.step("Step 4: click logo"):
+            main_page.go_to_main_page()
+            #main_page.click_logo()
+        
+    
+    @allure.story("Resize window")
+    @allure.sub_suite("Resize window")
+    @allure.title("Resize window on category page")
+    def test_resize_category_page(self, browser_chrome):
+        link = "https://flowwow.com/kazan/" 
+        with allure.step("Step 1: open category page"):
+            category_page = CategoryPage(browser_chrome, link)
+            category_page.open()
+            category_page.accept_cookies()
+            #category_page.should_be_correct_response_status_code()
+        with allure.step("Step 2: resize window"):
+            width = 800
+            height = 600
+            category_page.resize_window(width, height)
+            time.sleep(2)
+        with allure.step("Step 3: maximize window"):
+            category_page.maximize_window()
+        with allure.step("Step 4: click logo and go to main page"):
+            category_page.go_to_main_page()
+    
+    @pytest.mark.resize
+    @allure.story("Resize window")
+    @allure.sub_suite("Resize window")
+    @allure.title("Resize window on shop page")
+    def test_resize_shop_page(self, browser_chrome):
+        link = "https://flowwow.com/shop/mnogoroz/" 
+        with allure.step("Step 1: open shop page"):
+            shop_page = ShopPage(browser_chrome, link)
+            shop_page.open()
+            #shop_page.should_be_correct_response_status_code()
+        with allure.step("Step 2: resize window"):
+            width = 800
+            height = 600
+            shop_page.resize_window(width, height)
+        with allure.step("Step 3: maximize window"):
+            shop_page.maximize_window()
+        with allure.step("Step 4: click logo and go to main page"):
+            shop_page.go_to_main_page()

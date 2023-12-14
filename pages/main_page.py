@@ -10,5 +10,4 @@ import time
 
 class MainPage(BasePage):
     def click(self):
-        sidebar_name = self.is_visible(*MainPageLocators.PRODUCTS_POPUPS)
-    
+        pass
