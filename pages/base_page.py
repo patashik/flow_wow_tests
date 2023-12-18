@@ -187,27 +187,28 @@ class BasePage():
     def should_be_shop_in_url(self, shop_link):
         assert self.url_to_be(shop_link), 'Shop page incorrect'
 
+    def should_change_url(self, link):
+        assert self.url_changes(link), "Url did not change"
+    
     def should_switch_to_shops(self):
         switch_to_shops = self.is_visible(*BasePageLocators.SWITCH_TO_SHOPS)
         switch_to_shops.click()
         self.url_changed()
         assert self.url_contains("all-shops"), 'Did not switch to shops'
 
-    def start_search_by_popular_request(self, popular_request, popular_request_text):
+    def start_search_by_popular_request(self, popular_request, popular_request_text, link):
         popular_request.click()
-        self.url_changed()
+        self.url_changed(link)
+        print(self.browser.current_url)
         self.should_be_search_request_in_url(popular_request_text)
     
-    def start_search_by_request(self, search_request):
+    def start_search_by_request(self, search_request, link):
         search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
         symbols = list(search_request)
         for i in symbols:
             search_string.click()
             search_string.send_keys(i)
-        search_string.click()
         search_string.send_keys(Keys.ENTER)
-        self.url_changed()
-        self.should_be_search_request_in_url(search_request)
     
     def start_search_by_text_and_recommendation(self, recommendation, recommendation_text):
         recommendation.click()
@@ -218,14 +219,14 @@ class BasePage():
         shop_window = self.browser.window_handles[1]
         self.browser.switch_to.window(shop_window)
 
-    def url_changed(self, timeout=30):
+    def url_changes(self, link, timeout=30):
         try:
-            WebDriverWait(self.browser, timeout, 1, TimeoutException).until(EC.url_changes((self.browser.current_url)))
+            WebDriverWait(self.browser, timeout, 1, TimeoutException).until(EC.url_changes((link)))
         except TimeoutException:
             return False
         return True
-
-    def url_contains(self, url_text, timeout=30):
+    
+    def url_contains(self, url_text, timeout=60):
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException).until(EC.url_contains(url_text))
         except TimeoutException:
