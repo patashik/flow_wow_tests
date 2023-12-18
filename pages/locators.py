@@ -37,7 +37,7 @@ class CategoryPageLocators():
     PRODUCT_FIRST = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[2]/div/div[1]/div/article[1]')
     PRODUCT_FIRST_NAME = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[2]/div/div[1]/div/article[1]/a/div/div[2]/div[1]')
     PRODUCT_FIRST_LINK = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[2]/div/div[1]/div/article[1]/a')
-    PRODUCT_SLIDER = (By.XPATH, '//*[@id="ProductDetailModal"]/div/div/div/div/div/div/div[1]/div[1]/div[1]')
+    PRODUCT_DETAILS_CONTENT = (By.XPATH, '//*[@id="grid"]/section/div/div/div[2]/div[1]/div')
     SUBCATEGORY_MONOBOUQETS = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[1]/div/div[1]')
     SUBCATEGORY_MONOBOUQETS_LINK = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[1]/div/div[1]/a')
     SWITCH_TO_PRODUCTS = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[1]/div/div[2]/span[1]')

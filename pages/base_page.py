@@ -100,7 +100,7 @@ class BasePage():
         logo_button = self.is_clickable(*BasePageLocators.LOGO_BUTTON)
         logo_button.click()
 
-    def has_disappeared(self, how, what, timeout=10):
+    def has_disappeared(self, how, what, timeout=40):
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException).until_not(EC.presence_of_element_located((how, what)))
         except TimeoutException:

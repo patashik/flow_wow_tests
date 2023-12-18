@@ -159,7 +159,6 @@ class TestHappyPathChrome():
         with allure.step("Step 4: select product"):
             product_name = category_page.select_product()
         with allure.step("Step 5: add product to cart"):
-            time.sleep(3)
             category_page.add_to_cart()
         with allure.step("Step 6: set address"):
             category_page.fill_short_address_form(address)
@@ -193,7 +192,6 @@ class TestHappyPathChrome():
             main_page.go_to_main_page()
             #main_page.click_logo()
         
-    
     @allure.story("Resize window")
     @allure.sub_suite("Resize window")
     @allure.title("Resize window on category page")
