@@ -66,7 +66,7 @@ class BasePage():
         self.select_address_from_list(address)
         accept_button = self.is_clickable(*BasePageLocators.ADDRESS_ACCEPT_BUTTON)
         accept_button.click()
-        self.has_disappeared(*BasePageLocators.ADDRESS_FORM)
+        assert self.has_disappeared(*BasePageLocators.ADDRESS_FORM)
 
     def fill_detailed_address_form(self, house, office, comment):
         house_form = self.is_clickable(*BasePageLocators.ADDRESS_HOUSE)
@@ -77,16 +77,17 @@ class BasePage():
         office_form.send_keys(office)
         comment_form = self.is_clickable(*BasePageLocators.ADDRESS_COMMENT)
         comment_form.click()
-        comment_form.send_keys(comment)
+        comment_form.send_keys(comment)    
         accept_button = self.is_clickable(*BasePageLocators.ADDRESS_ACCEPT_BUTTON_DETAILED)
         accept_button.click()
-        self.has_disappeared(*BasePageLocators.ADDRESS_FORM_DETAILED)
+        assert self.has_disappeared(*BasePageLocators.ADDRESS_FORM_DETAILED), 'Address not accepted'
     
     def go_to_category_page(self):
-        category_link = "https://flowwow.com/kazan/"
         category = self.is_clickable(*BasePageLocators.CATEGORY_FLOWERS)
         category.click()
-        self.url_changed()
+
+    def should_open_category_page(self):
+        category_link = "https://flowwow.com/kazan/"
         assert self.url_to_be(category_link), 'Did not open category page'
 
     def go_to_main_page(self):
@@ -150,10 +151,8 @@ class BasePage():
 
     def select_address_from_list(self, address):
         self.is_visible(*BasePageLocators.ADDRESS_LIST)
-        self.element_text_is(*BasePageLocators.ADDRESS_FIRST_ITEM, address)
+        assert self.element_text_is(*BasePageLocators.ADDRESS_FIRST_ITEM, address)
         address_item = self.is_clickable(*BasePageLocators.ADDRESS_FIRST_ITEM)
-        #print(address_item.text)
-        #assert f'{address}' in address_item.text, "No Lenin"
         address_item.click()
 
     def select_popular_request(self):
@@ -169,7 +168,6 @@ class BasePage():
 
     def select_shop_recommendation(self):
         recommendation = self.is_clickable(*BasePageLocators.RECOMMENDATION_SHOP)
-        #recommendation.click()
         return recommendation
 
     def should_be_search_request_in_search_string(self, search_request):
@@ -185,7 +183,7 @@ class BasePage():
         assert setted_address.text == f'Казань, {address}, {house}', 'Setted address incorrect'
         
     def should_be_shop_in_url(self, shop_link):
-        assert self.url_to_be(shop_link), 'Shop page incorrect'
+        assert self.url_contains(shop_link), 'Shop page url incorrect'
 
     def should_change_url(self, link):
         assert self.url_changes(link), "Url did not change"
@@ -198,11 +196,8 @@ class BasePage():
 
     def start_search_by_popular_request(self, popular_request, popular_request_text, link):
         popular_request.click()
-        self.url_changed(link)
-        print(self.browser.current_url)
-        self.should_be_search_request_in_url(popular_request_text)
-    
-    def start_search_by_request(self, search_request, link):
+            
+    def start_search_by_request(self, search_request):
         search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
         symbols = list(search_request)
         for i in symbols:

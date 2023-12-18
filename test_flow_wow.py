@@ -27,7 +27,7 @@ class TestHappyPathChrome():
             main_page.accept_cookies()
             #main_page.should_be_correct_response_status_code()
         with allure.step("Step 2: insert text in string and activate search"):
-            main_page.start_search_by_request(search_request, link)
+            main_page.start_search_by_request(search_request)
             main_page.should_change_url(link)
             main_page.should_be_search_request_in_url(search_request)
         with allure.step("Step 3: show search results"):
@@ -51,7 +51,9 @@ class TestHappyPathChrome():
             popular_request = main_page.select_popular_request()
             popular_request_text = popular_request.text
         with allure.step("Step 3: start search"):
-            main_page.start_search_by_popular_request(popular_request, popular_request_text, link)
+            popular_request.click()
+            main_page.should_change_url(link)
+            main_page.should_be_search_request_in_url(popular_request_text)
         with allure.step("Step 4: show search results"):
             result_page = ResultPage(browser_chrome, browser_chrome.current_url)
             result_page.should_be_search_request_in_search_string(popular_request_text)
@@ -75,7 +77,9 @@ class TestHappyPathChrome():
             recommendation = main_page.select_recommendation()
             recommendation_text = recommendation.text
         with allure.step("Step 3: start search"):
-            main_page.start_search_by_text_and_recommendation(recommendation, recommendation_text)
+            recommendation.click()
+            main_page.should_change_url(link)
+            main_page.should_be_search_request_in_url(recommendation_text)
         with allure.step("Step 4: show search results"):
             result_page = ResultPage(browser_chrome, browser_chrome.current_url)
             result_page.should_be_search_request_in_search_string(recommendation_text)
@@ -94,18 +98,21 @@ class TestHappyPathChrome():
             main_page.accept_cookies()
         with allure.step("Step 2: insert text in string and activate search"):
             main_page.start_search_by_request(search_request)
+            main_page.should_change_url(link)
+            main_page.should_be_search_request_in_url(search_request)
         with allure.step("Step 3: show search results"):
             result_page = ResultPage(browser_chrome, browser_chrome.current_url)
             result_page.should_be_search_request_in_search_string(search_request)
             result_page.should_be_not_found_message()
 
-    @pytest.mark.search
+    @pytest.mark.shop2
     @allure.story("Search")
     @allure.sub_suite("Search")
     @allure.title("Search shop by name and recommendation")
     def test_search_product_by_name_and_recommendation(self, browser_chrome):
         search_request = "многороз"
         link = "https://flowwow.com/kazan/all-products/" 
+        shop_link = "https://flowwow.com/shop/mnogoroz/"
         with allure.step("Step 1: open main page"):
             main_page = BasePage(browser_chrome, link)
             main_page.open()
@@ -155,6 +162,8 @@ class TestHappyPathChrome():
             main_page.accept_cookies()
         with allure.step("Step 2: open flowers category page"):
             main_page.go_to_category_page()
+            main_page.should_change_url(link)
+            main_page.should_open_category_page()
             category_page = CategoryPage(browser_chrome, browser_chrome.current_url)
         with allure.step("Step 3: switch to product subcategory"):
             category_page.switch_to_subcategory()
