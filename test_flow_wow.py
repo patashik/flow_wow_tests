@@ -27,7 +27,9 @@ class TestHappyPathChrome():
             main_page.accept_cookies()
             #main_page.should_be_correct_response_status_code()
         with allure.step("Step 2: insert text in string and activate search"):
-            main_page.start_search_by_request(search_request)
+            main_page.start_search_by_request(search_request, link)
+            main_page.should_change_url(link)
+            main_page.should_be_search_request_in_url(search_request)
         with allure.step("Step 3: show search results"):
             result_page = ResultPage(browser_chrome, browser_chrome.current_url)
             result_page.should_be_search_request_in_search_string(search_request)
@@ -49,7 +51,7 @@ class TestHappyPathChrome():
             popular_request = main_page.select_popular_request()
             popular_request_text = popular_request.text
         with allure.step("Step 3: start search"):
-            main_page.start_search_by_popular_request(popular_request, popular_request_text)
+            main_page.start_search_by_popular_request(popular_request, popular_request_text, link)
         with allure.step("Step 4: show search results"):
             result_page = ResultPage(browser_chrome, browser_chrome.current_url)
             result_page.should_be_search_request_in_search_string(popular_request_text)
@@ -159,7 +161,6 @@ class TestHappyPathChrome():
         with allure.step("Step 4: select product"):
             product_name = category_page.select_product()
         with allure.step("Step 5: add product to cart"):
-            time.sleep(3)
             category_page.add_to_cart()
         with allure.step("Step 6: set address"):
             category_page.fill_short_address_form(address)
@@ -193,7 +194,6 @@ class TestHappyPathChrome():
             main_page.go_to_main_page()
             #main_page.click_logo()
         
-    
     @allure.story("Resize window")
     @allure.sub_suite("Resize window")
     @allure.title("Resize window on category page")
