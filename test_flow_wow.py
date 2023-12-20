@@ -28,7 +28,7 @@ class TestHappyPathChrome():
             #main_page.should_be_correct_response_status_code()
         with allure.step("Step 2: insert text in string and activate search"):
             main_page.start_search_by_request(search_request)
-            main_page.should_change_url(link)
+            main_page.should_change_url()
             main_page.should_be_search_request_in_url(search_request)
         with allure.step("Step 3: show search results"):
             result_page = ResultPage(browser_chrome, browser_chrome.current_url)
@@ -52,7 +52,7 @@ class TestHappyPathChrome():
             popular_request_text = popular_request.text
         with allure.step("Step 3: start search"):
             popular_request.click()
-            main_page.should_change_url(link)
+            main_page.should_change_url()
             main_page.should_be_search_request_in_url(popular_request_text)
         with allure.step("Step 4: show search results"):
             result_page = ResultPage(browser_chrome, browser_chrome.current_url)
@@ -78,7 +78,7 @@ class TestHappyPathChrome():
             recommendation_text = recommendation.text
         with allure.step("Step 3: start search"):
             recommendation.click()
-            main_page.should_change_url(link)
+            main_page.should_change_url()
             main_page.should_be_search_request_in_url(recommendation_text)
         with allure.step("Step 4: show search results"):
             result_page = ResultPage(browser_chrome, browser_chrome.current_url)
@@ -98,7 +98,7 @@ class TestHappyPathChrome():
             main_page.accept_cookies()
         with allure.step("Step 2: insert text in string and activate search"):
             main_page.start_search_by_request(search_request)
-            main_page.should_change_url(link)
+            main_page.should_change_url()
             main_page.should_be_search_request_in_url(search_request)
         with allure.step("Step 3: show search results"):
             result_page = ResultPage(browser_chrome, browser_chrome.current_url)
@@ -112,20 +112,20 @@ class TestHappyPathChrome():
     def test_search_product_by_name_and_recommendation(self, browser_chrome):
         search_request = "многороз"
         link = "https://flowwow.com/kazan/all-products/" 
-        shop_link = "https://flowwow.com/shop/mnogoroz/"
         with allure.step("Step 1: open main page"):
             main_page = BasePage(browser_chrome, link)
             main_page.open()
             main_page.accept_cookies()
-        with allure.step("Step 2: insert text in string and activate search"):
+        with allure.step("Step 2: insert text in string"):
             main_page.insert_search_request(search_request)
+        with allure.step("Step 3: select recommendation and activate search"):
             shop_recommendation = main_page.select_shop_recommendation()
             shop_link = shop_recommendation.get_attribute("href")
             shop_recommendation.click()
         with allure.step("Step 3: open shop page"):
             main_page.switch_to_shop_window()
             shop_page = ShopPage(browser_chrome, browser_chrome.current_url)
-            shop_page.should_be_shop_in_url(shop_link)
+            shop_page.should_be_content_in_url(shop_link)
 
     @pytest.mark.address
     @allure.story("Address")
@@ -162,11 +162,12 @@ class TestHappyPathChrome():
             main_page.accept_cookies()
         with allure.step("Step 2: open flowers category page"):
             main_page.go_to_category_page()
-            main_page.should_change_url(link)
+            main_page.should_change_url()
             main_page.should_open_category_page()
             category_page = CategoryPage(browser_chrome, browser_chrome.current_url)
         with allure.step("Step 3: switch to product subcategory"):
-            category_page.switch_to_subcategory()
+            print(category_page.url)
+            category_page.switch_to_subcategory2()
         with allure.step("Step 4: select product"):
             product_name = category_page.select_product()
         with allure.step("Step 5: add product to cart"):

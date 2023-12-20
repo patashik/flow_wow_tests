@@ -10,7 +10,7 @@ import time
 
 class CategoryPage(BasePage):
     def add_to_cart(self):
-        details = self.has_disappeared(*CategoryPageLocators.PRODUCT_DETAILS_CONTENT)
+        self.has_disappeared(*CategoryPageLocators.PRODUCT_DETAILS_CONTENT)
         add_to_cart_button = self.is_clickable(*CategoryPageLocators.ADD_TO_CART_BUTTON)
         add_to_cart_button.click()
 
@@ -34,12 +34,44 @@ class CategoryPage(BasePage):
         assert self.get_product_card_title() == product_name, "Product card title incorrect" 
         return product_name
 
-    def switch_to_subcategory(self):
-        subcategory_button = self.is_clickable(*CategoryPageLocators.SUBCATEGORY_MONOBOUQETS)
+    def switch_to_subcategory1(self):
+        subcategory_button = self.is_clickable(*CategoryPageLocators.SUBCATEGORY_MONOBOUQETS_BUTTON)
         subcategory_info = self.is_visible(*CategoryPageLocators.SUBCATEGORY_MONOBOUQETS_LINK)
         subcategory_link = subcategory_info.get_attribute("href")
         subcategory_title = subcategory_info.text
         subcategory_button.click()
-        self.url_changed()
+        self.should_change_url()
         assert self.url_contains(subcategory_link), "Did not switch to subcategory"
-        assert self.get_page_title() == f'{subcategory_title} в Казани', "Page title incorrect" 
+        assert self.should_be_page_title(f'{subcategory_title} в Казани')
+        #assert self.get_page_title() == f'{subcategory_title} в Казани', "Page title incorrect" 
+
+    def get_subcategory_title(self):
+        subcategory_info = self.is_visible(*CategoryPageLocators.SUBCATEGORY_MONOBOUQETS_LINK)
+        subcategory_title = subcategory_info.text
+        return subcategory_title 
+    
+    def get_subcategory_link(self):
+        subcategory_info = self.is_visible(*CategoryPageLocators.SUBCATEGORY_MONOBOUQETS_LINK)
+        subcategory_link = subcategory_info.get_attribute("href")
+        return subcategory_link 
+
+    def click_subcategory(self):
+        subcategory_button = self.is_clickable(*CategoryPageLocators.SUBCATEGORY_MONOBOUQETS_BUTTON)
+        subcategory_button.click()
+
+    def switch_to_subcategory2(self):
+        #subcategory_link = self.get_subcategory_link()
+        #print(subcategory_link)
+        #subcategory_title = self.get_subcategory_title()
+        self.click_subcategory()
+        time.sleep(7)
+        print()
+        #print(self.browser.current_url)
+        #self.should_change_url()
+        #print(self.browser.current_url)
+        #self.should_be_correct_url(subcategory_link)
+        #self.should_be_page_title(f'{subcategory_title} в Казани')
+    
+
+
+
