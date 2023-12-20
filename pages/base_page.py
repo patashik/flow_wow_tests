@@ -150,7 +150,6 @@ class BasePage():
     
     def open_shop_page(self):
         shop_link = "https://flowwow.com/shop/"
-        #self.url_changed()
         assert self.url_contains(shop_link), 'Did not open shop page'
     
     def resize_window(self, width, height):
@@ -234,7 +233,7 @@ class BasePage():
             return False
         return True
 
-    def url_changes(self, timeout=100):
+    def url_changes(self, timeout=300):
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException).until(EC.url_changes((self.url)))
         except TimeoutException:
