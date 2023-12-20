@@ -108,10 +108,17 @@ class BasePage():
             return False
         return True
     
+    def is_clickable2(self, how, what, timeout=300):
+        try:
+            element = WebDriverWait(self.browser, timeout, 1).until(EC.element_to_be_clickable((how, what)))
+        except TimeoutException:
+            return False
+        return element
+    
     def is_clickable(self, how, what, timeout=300):
         element = WebDriverWait(self.browser, timeout, 1).until(EC.element_to_be_clickable((how, what)))
         return element
-
+    
     def is_presented(self, how, what, timeout=10):
         element = WebDriverWait(self.browser, timeout, 1).until(EC.presence_of_element_located((how, what)))
         return element
@@ -182,11 +189,17 @@ class BasePage():
         print(setted_address.text)
         assert setted_address.text == f'Казань, {address}, {house}', 'Setted address incorrect'
         
-    def should_be_shop_in_url(self, shop_link):
-        assert self.url_contains(shop_link), 'Shop page url incorrect'
+    def should_be_content_in_url(self, content):
+        assert self.url_contains(content), 'Page url incorrect'
 
-    def should_change_url(self, link):
-        assert self.url_changes(link), "Url did not change"
+    def should_be_correct_url(self, new_url):
+        assert self.url_to_be(new_url), 'Page url incorrect'
+
+    def should_be_page_title(self, page_title):
+        assert self.title_is(page_title), 'Page title incorrect'
+
+    def should_change_url(self):
+        assert self.url_changes(), "Url did not change"
     
     def should_switch_to_shops(self):
         switch_to_shops = self.is_visible(*BasePageLocators.SWITCH_TO_SHOPS)
@@ -214,9 +227,16 @@ class BasePage():
         shop_window = self.browser.window_handles[1]
         self.browser.switch_to.window(shop_window)
 
-    def url_changes(self, link, timeout=30):
+    def title_is(self, page_title, timeout=30):
         try:
-            WebDriverWait(self.browser, timeout, 1, TimeoutException).until(EC.url_changes((link)))
+            WebDriverWait(self.browser, timeout, 1, TimeoutException).until(EC.title_is((page_title)))
+        except TimeoutException:
+            return False
+        return True
+
+    def url_changes(self, timeout=100):
+        try:
+            WebDriverWait(self.browser, timeout, 1, TimeoutException).until(EC.url_changes((self.url)))
         except TimeoutException:
             return False
         return True
@@ -228,7 +248,7 @@ class BasePage():
             return False
         return True
         
-    def url_to_be(self, new_url, timeout=30):
+    def url_to_be(self, new_url, timeout=60):
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException).until(EC.url_to_be(new_url))
         except TimeoutException:
