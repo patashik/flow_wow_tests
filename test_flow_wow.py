@@ -166,8 +166,13 @@ class TestHappyPathChrome():
             main_page.should_open_category_page()
             category_page = CategoryPage(browser_chrome, browser_chrome.current_url)
         with allure.step("Step 3: switch to product subcategory"):
-            print(category_page.url)
-            category_page.switch_to_subcategory2()
+            #category_page.switch_to_subcategory()
+            subcategory_link = category_page.get_subcategory_link()
+            subcategory_title = category_page.get_subcategory_title()
+            category_page.click_subcategory()
+            category_page.should_change_url()
+            category_page.should_be_correct_url(subcategory_link)
+            category_page.should_be_correct_page_topic(subcategory_title)
         with allure.step("Step 4: select product"):
             product_name = category_page.select_product()
         with allure.step("Step 5: add product to cart"):
@@ -175,7 +180,7 @@ class TestHappyPathChrome():
         with allure.step("Step 6: set address"):
             category_page.fill_short_address_form(address)
         with allure.step("Step 7: go to shop page with cart"):
-            category_page.url_changed()
+            category_page.should_change_url()
             category_page.open_shop_page()
             shop_page = ShopPage(browser_chrome, browser_chrome.current_url)
             shop_page.should_be_cart(product_name)

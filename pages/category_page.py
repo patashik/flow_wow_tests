@@ -14,36 +14,37 @@ class CategoryPage(BasePage):
         add_to_cart_button = self.is_clickable(*CategoryPageLocators.ADD_TO_CART_BUTTON)
         add_to_cart_button.click()
 
-    def get_page_title(self):
+    def get_page_topic(self):
         page_title = self.is_visible(*CategoryPageLocators.PAGE_TITLE)
         return page_title.text
     
     def get_product_card_title(self):
         product_card_title = self.is_visible(*CategoryPageLocators.PRODUCT_CARD_TITLE)
         return product_card_title.text
-
-    def select_product(self):
-        product = self.is_clickable(*CategoryPageLocators.PRODUCT_FIRST)
+   
+    def get_product_link(self):
         product_link = self.is_visible(*CategoryPageLocators.PRODUCT_FIRST_LINK)
         product_link = product_link.get_attribute("href")
+        return product_link
+
+    def get_product_name(self):
         product_name = self.is_visible(*CategoryPageLocators.PRODUCT_FIRST_NAME)
         product_name = product_name.text
-        product.click()
-        self.url_changed()
-        assert self.url_contains(product_link), "Did not open product card"
-        assert self.get_product_card_title() == product_name, "Product card title incorrect" 
         return product_name
-
-    def switch_to_subcategory1(self):
-        subcategory_button = self.is_clickable(*CategoryPageLocators.SUBCATEGORY_MONOBOUQETS_BUTTON)
-        subcategory_info = self.is_visible(*CategoryPageLocators.SUBCATEGORY_MONOBOUQETS_LINK)
-        subcategory_link = subcategory_info.get_attribute("href")
-        subcategory_title = subcategory_info.text
-        subcategory_button.click()
+    
+    def select_product(self):            
+        product_name = self.get_product_name()
+        product_link = self.get_product_link()
+        self.click_product()
         self.should_change_url()
-        assert self.url_contains(subcategory_link), "Did not switch to subcategory"
-        assert self.should_be_page_title(f'{subcategory_title} в Казани')
-        #assert self.get_page_title() == f'{subcategory_title} в Казани', "Page title incorrect" 
+        self.should_be_correct_url(product_link)
+        self.should_be_correct_card_title(product_name)
+    
+    def should_be_correct_page_topic(self, subcategory_title):
+        assert self.get_page_topic() == f'{subcategory_title} в Казани', "Page title incorrect" 
+
+    def should_be_correct_card_title():
+        assert self.get_product_card_title() == product_name, "Product card title incorrect" 
 
     def get_subcategory_title(self):
         subcategory_info = self.is_visible(*CategoryPageLocators.SUBCATEGORY_MONOBOUQETS_LINK)
@@ -55,23 +56,18 @@ class CategoryPage(BasePage):
         subcategory_link = subcategory_info.get_attribute("href")
         return subcategory_link 
 
+    def click_product(self):
+        product = self.is_clickable(*CategoryPageLocators.PRODUCT_FIRST)
+        product.click()
+
     def click_subcategory(self):
         subcategory_button = self.is_clickable(*CategoryPageLocators.SUBCATEGORY_MONOBOUQETS_BUTTON)
         subcategory_button.click()
 
-    def switch_to_subcategory2(self):
-        #subcategory_link = self.get_subcategory_link()
-        #print(subcategory_link)
-        #subcategory_title = self.get_subcategory_title()
+    def switch_to_subcategory(self):
+        subcategory_link = self.get_subcategory_link()
+        subcategory_title = self.get_subcategory_title()
         self.click_subcategory()
-        time.sleep(7)
-        print()
-        #print(self.browser.current_url)
-        #self.should_change_url()
-        #print(self.browser.current_url)
-        #self.should_be_correct_url(subcategory_link)
-        #self.should_be_page_title(f'{subcategory_title} в Казани')
-    
-
-
-
+        self.should_change_url()
+        self.should_be_correct_url(subcategory_link)
+        self.should_be_correct_page_topic(subcategory_title)
