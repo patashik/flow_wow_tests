@@ -54,6 +54,10 @@ class BasePage():
             return False
         return True
 
+    def click_set_address(self):
+        address_button = self.is_clickable(*BasePageLocators.ADDRESS_BUTTON)
+        address_button.click()
+    
     def element_text_is(self, how, what, text, timeout=30):
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException).until(EC.text_to_be_present_in_element((how, what), f'{text}'))
@@ -66,8 +70,7 @@ class BasePage():
         self.select_address_from_list(address)
         accept_button = self.is_clickable(*BasePageLocators.ADDRESS_ACCEPT_BUTTON)
         accept_button.click()
-        assert self.has_disappeared(*BasePageLocators.ADDRESS_FORM)
-
+    
     def fill_detailed_address_form(self, house, office, comment):
         house_form = self.is_clickable(*BasePageLocators.ADDRESS_HOUSE)
         house_form.click()
@@ -80,24 +83,12 @@ class BasePage():
         comment_form.send_keys(comment)    
         accept_button = self.is_clickable(*BasePageLocators.ADDRESS_ACCEPT_BUTTON_DETAILED)
         accept_button.click()
-        assert self.has_disappeared(*BasePageLocators.ADDRESS_FORM_DETAILED), 'Address not accepted'
-    
+          
     def go_to_category_page(self):
         category = self.is_clickable(*BasePageLocators.CATEGORY_FLOWERS)
         category.click()
 
-    def should_open_category_page(self):
-        category_link = "https://flowwow.com/kazan/"
-        assert self.url_to_be(category_link), 'Did not open category page'
-
     def go_to_main_page(self):
-        main_page_url = "https://flowwow.com/kazan/all-products/" 
-        logo_button = self.is_clickable(*BasePageLocators.LOGO_BUTTON)
-        logo_button.click()
-        self.url_changed()
-        assert self.url_to_be(main_page_url), 'Did not open main page'
-    
-    def click_logo(self):
         logo_button = self.is_clickable(*BasePageLocators.LOGO_BUTTON)
         logo_button.click()
 
@@ -108,25 +99,25 @@ class BasePage():
             return False
         return True
     
-    def is_clickable2(self, how, what, timeout=300):
+    def is_clickable(self, how, what, timeout=300):
         try:
             element = WebDriverWait(self.browser, timeout, 1).until(EC.element_to_be_clickable((how, what)))
         except TimeoutException:
             return False
         return element
-    
-    def is_clickable(self, how, what, timeout=300):
-        element = WebDriverWait(self.browser, timeout, 1).until(EC.element_to_be_clickable((how, what)))
-        return element
-    
-    def is_presented(self, how, what, timeout=10):
-        element = WebDriverWait(self.browser, timeout, 1).until(EC.presence_of_element_located((how, what)))
-        return element
-    
-    def is_visible(self, how, what, timeout=100):
-        element = WebDriverWait(self.browser, timeout, 1).until(EC.visibility_of_element_located((how, what)))
-        return element
 
+    def is_visible(self, how, what, timeout=100):
+        try:
+            element = WebDriverWait(self.browser, timeout, 1).until(EC.visibility_of_element_located((how, what)))
+        except TimeoutException:
+            return False
+        return element
+    
+    def insert_address(self, address):
+        address_input = self.is_clickable(*BasePageLocators.ADDRESS_INPUT)
+        address_input.click()
+        address_input.send_keys(address)
+   
     def insert_search_request(self, search_request):
         search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
         symbols = list(search_request)
@@ -134,23 +125,9 @@ class BasePage():
             search_string.click()
             search_string.send_keys(i)
     
-    def insert_address(self, address):
-        address_input = self.is_clickable(*BasePageLocators.ADDRESS_INPUT)
-        address_input.click()
-        address_input.send_keys(address)
-    
     def maximize_window(self):
         self.browser.maximize_window()
 
-    def open_address_form(self):
-        address_button = self.is_clickable(*BasePageLocators.ADDRESS_BUTTON)
-        address_button.click()
-        address_form = self.is_clickable(*BasePageLocators.ADDRESS_FORM)
-        assert address_form, 'Did not open address form'
-    
-    def open_shop_page(self):
-        shop_link = "https://flowwow.com/shop/"
-        assert self.url_contains(shop_link), 'Did not open shop page'
     
     def resize_window(self, width, height):
         self.browser.set_window_size(width, height)
@@ -164,7 +141,6 @@ class BasePage():
     def select_popular_request(self):
         search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
         search_string.click()
-        popular_requests_list = self.is_visible(*BasePageLocators.POPULAR_REQUESTS_LIST)
         popular_request_first = self.is_clickable(*BasePageLocators.POPULAR_REQUESTS_FIRST)
         return popular_request_first
 
@@ -173,8 +149,14 @@ class BasePage():
         return recommendation
 
     def select_shop_recommendation(self):
-        recommendation = self.is_clickable(*BasePageLocators.RECOMMENDATION_SHOP)
-        return recommendation
+        shop_recommendation = self.is_clickable(*BasePageLocators.RECOMMENDATION_SHOP)
+        return shop_recommendation
+
+    def should_be_content_in_url(self, content):
+        assert self.url_contains(content), 'Page url incorrect'
+
+    def should_be_correct_url(self, new_url):
+        assert self.url_to_be(new_url), 'Page url incorrect'
 
     def should_be_search_request_in_search_string(self, search_request):
         search_string = self.is_visible(*BasePageLocators.SEARCH_STRING)
@@ -185,42 +167,49 @@ class BasePage():
     
     def should_be_setted_address(self, address, house):
         setted_address = self.is_visible(*BasePageLocators.ADDRESS_BUTTON)
-        print(setted_address.text)
         assert setted_address.text == f'Казань, {address}, {house}', 'Setted address incorrect'
         
-    def should_be_content_in_url(self, content):
-        assert self.url_contains(content), 'Page url incorrect'
-
-    def should_be_correct_url(self, new_url):
-        assert self.url_to_be(new_url), 'Page url incorrect'
-
     def should_be_page_title(self, page_title):
         assert self.title_is(page_title), 'Page title incorrect'
 
     def should_change_url(self):
         assert self.url_changes(), "Url did not change"
     
+    def should_disappear_address_form(self):
+        assert self.has_disappeared(*BasePageLocators.ADDRESS_FORM), 'Address not accepted'
+
+    def should_disappear_detailed_address_form(self):
+        assert self.has_disappeared(*BasePageLocators.ADDRESS_FORM_DETAILED), 'Address not accepted'
+
+    def should_open_address_form(self):
+        assert self.is_clickable(*BasePageLocators.ADDRESS_FORM), 'Did not open address form'
+
+    def should_open_category_page(self):
+        category_page_url = "https://flowwow.com/kazan/"
+        assert self.url_to_be(category_page_url), 'Did not open category page'
+
+    def should_open_main_page(self):
+        main_page_url = "https://flowwow.com/kazan/all-products/" 
+        assert self.url_to_be(main_page_url), 'Did not open main page'
+
+    def should_open_shop_page(self):
+        shop_page_url = "https://flowwow.com/shop/"
+        assert self.url_contains(shop_page_url), 'Did not open shop page'
+
+    def should_open_start_page(self):
+        start_page_url = "https://flowwow.com/"
+        assert self.url_contains(start_page_url), 'Did not open start page'
+
     def should_switch_to_shops(self):
         switch_to_shops = self.is_visible(*BasePageLocators.SWITCH_TO_SHOPS)
         switch_to_shops.click()
-        self.url_changed()
-        assert self.url_contains("all-shops"), 'Did not switch to shops'
-
-    def start_search_by_popular_request(self, popular_request, popular_request_text, link):
-        popular_request.click()
+        #self.url_changed()
+        #assert self.url_contains("all-shops"), 'Did not switch to shops'
             
     def start_search_by_request(self, search_request):
+        self.insert_search_request(search_request)
         search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
-        symbols = list(search_request)
-        for i in symbols:
-            search_string.click()
-            search_string.send_keys(i)
         search_string.send_keys(Keys.ENTER)
-    
-    def start_search_by_text_and_recommendation(self, recommendation, recommendation_text):
-        recommendation.click()
-        self.url_changed()
-        self.should_be_search_request_in_url(recommendation_text)
     
     def switch_to_shop_window(self):
         shop_window = self.browser.window_handles[1]

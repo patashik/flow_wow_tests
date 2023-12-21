@@ -43,7 +43,7 @@ class CategoryPage(BasePage):
     def should_be_correct_page_topic(self, subcategory_title):
         assert self.get_page_topic() == f'{subcategory_title} в Казани', "Page title incorrect" 
 
-    def should_be_correct_card_title():
+    def should_be_correct_card_title(self, product_name):
         assert self.get_product_card_title() == product_name, "Product card title incorrect" 
 
     def get_subcategory_title(self):

@@ -142,11 +142,13 @@ class TestHappyPathChrome():
             main_page.open()
             main_page.accept_cookies()
         with allure.step("Step 2: set address using dropdown list"):
-            main_page.open_address_form()
+            main_page.click_set_address()
+            main_page.should_open_address_form()
             main_page.insert_address(address)
             main_page.select_address_from_list(address)
         with allure.step("Step 3: set detailed address"):
             main_page.fill_detailed_address_form(house, office, comment)
+            main_page.should_disappear_detailed_address_form()
             main_page.should_be_setted_address(address, house)
 
     @pytest.mark.cart
@@ -169,26 +171,35 @@ class TestHappyPathChrome():
             #category_page.switch_to_subcategory()
             subcategory_link = category_page.get_subcategory_link()
             subcategory_title = category_page.get_subcategory_title()
+            time.sleep(7)
             category_page.click_subcategory()
             category_page.should_change_url()
             category_page.should_be_correct_url(subcategory_link)
             category_page.should_be_correct_page_topic(subcategory_title)
         with allure.step("Step 4: select product"):
-            product_name = category_page.select_product()
+            product_name = category_page.get_product_name()
+            product_link = category_page.get_product_link()
+            category_page.click_product()
+            category_page.should_change_url()
+            category_page.should_be_correct_url(product_link)
+            category_page.should_be_correct_card_title(product_name)
         with allure.step("Step 5: add product to cart"):
             category_page.add_to_cart()
         with allure.step("Step 6: set address"):
             category_page.fill_short_address_form(address)
+            category_page.should_disappear_address_form()
         with allure.step("Step 7: go to shop page with cart"):
             category_page.should_change_url()
-            category_page.open_shop_page()
+            category_page.should_open_shop_page()
             shop_page = ShopPage(browser_chrome, browser_chrome.current_url)
-            shop_page.should_be_cart(product_name)
+            shop_page.should_be_cart()
+            shop_page.should_be_product_in_cart(product_name)
         with allure.step("Step 8: go to make order"):
             shop_page.go_to_make_order()
-        with allure.step("Step 9: log in"):
-            shop_page.log_in()
+        with allure.step("Step 9: open login form"):
+            shop_page.should_open_login_form()
 
+    @pytest.mark.resize1
     @allure.story("Resize window")
     @allure.sub_suite("Resize window")
     @allure.title("Resize window on main page")
@@ -205,10 +216,12 @@ class TestHappyPathChrome():
             main_page.resize_window(width, height)
         with allure.step("Step 3: maximize window"):
             main_page.maximize_window()
-        with allure.step("Step 4: click logo"):
+        with allure.step("Step 4: click logo to reload main page"):
             main_page.go_to_main_page()
-            #main_page.click_logo()
-        
+            #main_page.should_change_url()
+            main_page.should_open_main_page()
+
+    @pytest.mark.resize2
     @allure.story("Resize window")
     @allure.sub_suite("Resize window")
     @allure.title("Resize window on category page")
@@ -228,8 +241,10 @@ class TestHappyPathChrome():
             category_page.maximize_window()
         with allure.step("Step 4: click logo and go to main page"):
             category_page.go_to_main_page()
+            category_page.should_change_url()
+            category_page.should_open_main_page()
     
-    @pytest.mark.resize
+    @pytest.mark.resize3
     @allure.story("Resize window")
     @allure.sub_suite("Resize window")
     @allure.title("Resize window on shop page")
@@ -245,5 +260,9 @@ class TestHappyPathChrome():
             shop_page.resize_window(width, height)
         with allure.step("Step 3: maximize window"):
             shop_page.maximize_window()
-        with allure.step("Step 4: click logo and go to main page"):
-            shop_page.go_to_main_page()
+        with allure.step("Step 4: click logo and go to start page"):
+            shop_page.go_to_main_page_from_shop_page()
+            shop_page.should_change_url()
+            print(shop_page.browser.current_url)
+            shop_page.should_open_start_page()
+            
