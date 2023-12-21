@@ -9,17 +9,21 @@ import requests
 import time
 
 class ShopPage(BasePage):
-    def log_in(self):
-        login_form = self.is_visible(*ShopPageLocators.LOGIN_FORM)
-        assert login_form, 'Can not make order'
+    def go_to_main_page_from_shop_page(self):
+        button = self.is_clickable(*ShopPageLocators.LOGO_BUTTON)
+        button.click()
 
     def go_to_make_order(self):
         button = self.is_clickable(*ShopPageLocators.MAKE_ORDER_BUTTON)
         button.click()
         
-    def should_be_cart(self, product_name):
-        cart = self.is_visible(*ShopPageLocators.CART_FORM)
+    def should_be_cart(self):
+        assert self.is_visible(*ShopPageLocators.CART_FORM), 'No cart'
+
+    def should_be_product_in_cart(self, product_name):
         product = self.is_visible(*ShopPageLocators.PRODUCT_NAME)
-        assert product.text == product_name, 'Product not correct'
+        assert product, 'No product in cart'
+        assert product.text == product_name, 'Product in cart not correct'
     
-    
+    def should_open_login_form(self):
+        assert self.is_visible(*ShopPageLocators.LOGIN_FORM), 'Did not open login form'
