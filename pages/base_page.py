@@ -58,6 +58,10 @@ class BasePage():
         address_button = self.is_clickable(*BasePageLocators.ADDRESS_BUTTON)
         address_button.click()
     
+    def click_time_settings(self):
+        time_button = self.is_clickable(*BasePageLocators.TIME_BUTTON)
+        time_button.click()
+
     def element_text_is(self, how, what, text, timeout=30):
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException).until(EC.text_to_be_present_in_element((how, what), f'{text}'))
@@ -101,7 +105,7 @@ class BasePage():
     
     def is_clickable(self, how, what, timeout=300):
         try:
-            element = WebDriverWait(self.browser, timeout, 1).until(EC.element_to_be_clickable((how, what)))
+            element = WebDriverWait(self.browser, timeout, 2).until(EC.element_to_be_clickable((how, what)))
         except TimeoutException:
             return False
         return element
@@ -127,7 +131,6 @@ class BasePage():
     
     def maximize_window(self):
         self.browser.maximize_window()
-
     
     def resize_window(self, width, height):
         self.browser.set_window_size(width, height)
@@ -137,6 +140,18 @@ class BasePage():
         assert self.element_text_is(*BasePageLocators.ADDRESS_FIRST_ITEM, address)
         address_item = self.is_clickable(*BasePageLocators.ADDRESS_FIRST_ITEM)
         address_item.click()
+
+    def select_all_pairs_time(self, time):
+        time_item = self.is_clickable(By.XPATH, f'//*[@id="grid"]/header/div/header/div/div[1]/div[2]/div[1]/div/div[{time}]/label')
+        time_item.click()
+        
+    def save_selected_time(self):
+        save_button = self.is_clickable(*BasePageLocators.TIME_SAVE_BUTTON)
+        save_button.click()
+
+    def set_time(self, time):
+        self.select_all_pairs_time(time)
+        self.save_selected_time()
 
     def select_popular_request(self):
         search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
@@ -169,6 +184,10 @@ class BasePage():
         setted_address = self.is_visible(*BasePageLocators.ADDRESS_BUTTON)
         assert setted_address.text == f'Казань, {address}, {house}', 'Setted address incorrect'
         
+    def should_be_setted_time(self):
+        setted_time = self.is_visible(*BasePageLocators.TIME_BUTTON)
+        assert setted_time.text == 
+
     def should_be_page_title(self, page_title):
         assert self.title_is(page_title), 'Page title incorrect'
 
@@ -199,6 +218,9 @@ class BasePage():
     def should_open_start_page(self):
         start_page_url = "https://flowwow.com/"
         assert self.url_contains(start_page_url), 'Did not open start page'
+
+    def should_open_time_form(self):
+        assert self.is_clickable(*BasePageLocators.TIME_FORM), 'Did not open time form'
 
     def should_switch_to_shops(self):
         switch_to_shops = self.is_visible(*BasePageLocators.SWITCH_TO_SHOPS)

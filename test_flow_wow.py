@@ -171,7 +171,7 @@ class TestHappyPathChrome():
             #category_page.switch_to_subcategory()
             subcategory_link = category_page.get_subcategory_link()
             subcategory_title = category_page.get_subcategory_title()
-            time.sleep(7)
+            #time.sleep(7)
             category_page.click_subcategory()
             category_page.should_change_url()
             category_page.should_be_correct_url(subcategory_link)
@@ -266,3 +266,18 @@ class TestHappyPathChrome():
             print(shop_page.browser.current_url)
             shop_page.should_open_start_page()
             
+    @pytest.mark.time
+    @allure.story("Time")
+    @allure.sub_suite("Time")
+    @allure.title("Set time")
+    def test_set_time(self, browser_chrome):
+        link = "https://flowwow.com/kazan/all-products/" 
+        with allure.step("Step 1: open main page"):
+            main_page = BasePage(browser_chrome, link)
+            main_page.open()
+            main_page.accept_cookies()
+        with allure.step("Step 2: set time using allpairs"):
+            main_page.click_time_settings()
+            main_page.should_open_time_form()
+            main_page.set_time(time)
+            main_page.should_be_setted_time()
