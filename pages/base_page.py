@@ -148,6 +148,11 @@ class BasePage():
     def select_time_asap(self):
         self.is_clickable(*BasePageLocators.TIME_ITEM_ASAP).click()
 
+    def select_time_detailed(self):
+        self.is_clickable(*BasePageLocators.TIME_ITEM_DETAILED).click()
+        self.is_clickable(*BasePageLocators.TIME_TOMORROW).click()
+        self.is_clickable(*BasePageLocators.TIME_WHEN).click()
+
     def save_selected_time(self):
         self.is_clickable(*BasePageLocators.TIME_SAVE_BUTTON).click()
 
