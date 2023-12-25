@@ -144,13 +144,19 @@ class BasePage():
     def select_all_pairs_time(self, time):
         time_item = self.is_clickable(By.XPATH, f'//*[@id="grid"]/header/div/header/div/div[1]/div[2]/div[1]/div/div[{time}]/label')
         time_item.click()
-        
-    def save_selected_time(self):
-        save_button = self.is_clickable(*BasePageLocators.TIME_SAVE_BUTTON)
-        save_button.click()
+    
+    def select_time_asap(self):
+        self.is_clickable(*BasePageLocators.TIME_ITEM_ASAP).click()
 
-    def set_time(self, time):
+    def save_selected_time(self):
+        self.is_clickable(*BasePageLocators.TIME_SAVE_BUTTON).click()
+
+    def set_time_allpairs(self, time):
         self.select_all_pairs_time(time)
+        self.save_selected_time()
+
+    def set_time_asap(self):
+        self.select_time_asap()
         self.save_selected_time()
 
     def select_popular_request(self):
@@ -186,7 +192,7 @@ class BasePage():
         
     def should_be_setted_time(self):
         setted_time = self.is_visible(*BasePageLocators.TIME_BUTTON)
-        assert setted_time.text == 
+        assert setted_time.text == f'Как можно скорее', 'Time settings incorrect'
 
     def should_be_page_title(self, page_title):
         assert self.title_is(page_title), 'Page title incorrect'

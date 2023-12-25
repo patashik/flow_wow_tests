@@ -266,18 +266,18 @@ class TestHappyPathChrome():
             print(shop_page.browser.current_url)
             shop_page.should_open_start_page()
             
-    @pytest.mark.time
+    @pytest.mark.time1
     @allure.story("Time")
     @allure.sub_suite("Time")
-    @allure.title("Set time")
+    @allure.title("Set time asap")
     def test_set_time(self, browser_chrome):
         link = "https://flowwow.com/kazan/all-products/" 
         with allure.step("Step 1: open main page"):
             main_page = BasePage(browser_chrome, link)
             main_page.open()
             main_page.accept_cookies()
-        with allure.step("Step 2: set time using allpairs"):
+        with allure.step("Step 2: set time asap"):
             main_page.click_time_settings()
             main_page.should_open_time_form()
-            main_page.set_time(time)
+            main_page.set_time_asap()
             main_page.should_be_setted_time()
