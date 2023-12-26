@@ -103,13 +103,13 @@ class TestHappyPathChrome():
         with allure.step("Step 3: show search results"):
             result_page = ResultPage(browser_chrome, browser_chrome.current_url)
             result_page.should_be_search_request_in_search_string(search_request)
-            result_page.should_be_not_found_message()
+            result_page.should_be_any_result_message()
 
     @pytest.mark.shop2
     @allure.story("Search")
     @allure.sub_suite("Search")
     @allure.title("Search shop by name and recommendation")
-    def test_search_product_by_name_and_recommendation(self, browser_chrome):
+    def test_search_shop_by_name_and_recommendation(self, browser_chrome):
         search_request = "многороз"
         link = "https://flowwow.com/kazan/all-products/" 
         with allure.step("Step 1: open main page"):
@@ -171,7 +171,7 @@ class TestHappyPathChrome():
             #category_page.switch_to_subcategory()
             subcategory_link = category_page.get_subcategory_link()
             subcategory_title = category_page.get_subcategory_title()
-            #time.sleep(7)
+            time.sleep(7)
             category_page.click_subcategory()
             category_page.should_change_url()
             category_page.should_be_correct_url(subcategory_link)
@@ -276,24 +276,49 @@ class TestHappyPathChrome():
             main_page = BasePage(browser_chrome, link)
             main_page.open()
             main_page.accept_cookies()
-        with allure.step("Step 2: set time asap"):
+        with allure.step("Step 2: open time settings"):
             main_page.click_time_settings()
             main_page.should_open_time_form()
-            main_page.set_time_asap()
-            main_page.should_be_setted_time()
+        with allure.step("Step 3: set time asap"):
+            main_page.select_time_asap()
+            main_page.save_selected_time()
+            main_page.should_be_setted_time_asap()
 
     @pytest.mark.time2
     @allure.story("Time")
     @allure.sub_suite("Time")
-    @allure.title("Set time detailed")
+    @allure.title("Set detailed time")
     def test_set_time_detailed(self, browser_chrome):
         link = "https://flowwow.com/kazan/all-products/" 
         with allure.step("Step 1: open main page"):
             main_page = BasePage(browser_chrome, link)
             main_page.open()
             main_page.accept_cookies()
-        with allure.step("Step 2: set time asap"):
+        with allure.step("Step 2: open time settings"):
             main_page.click_time_settings()
             main_page.should_open_time_form()
-            main_page.set_time_detailed()
-            main_page.should_be_setted_time_asap()
+        with allure.step("Step 3: set detailed time"):
+            main_page.select_time_detailed()
+            day = main_page.select_day()
+            time = main_page.select_time_period()
+            main_page.save_selected_time()
+            main_page.should_be_setted_time_detailed(day, time)
+
+    @pytest.mark.time3
+    @allure.story("Time")
+    @allure.sub_suite("Time")
+    @allure.title("Set time from receiver")
+    def test_set_time_receiver(self, browser_chrome):
+        link = "https://flowwow.com/kazan/all-products/" 
+        with allure.step("Step 1: open main page"):
+            main_page = BasePage(browser_chrome, link)
+            main_page.open()
+            main_page.accept_cookies()
+        with allure.step("Step 2: open time settings"):
+            main_page.click_time_settings()
+            main_page.should_open_time_form()
+        with allure.step("Step 3: set time from receiver"):
+            main_page.select_time_receiver()
+            day = main_page.select_day()
+            main_page.save_selected_time()
+            main_page.should_be_setted_time_receiver(day)

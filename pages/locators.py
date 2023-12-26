@@ -28,8 +28,11 @@ class BasePageLocators():
     TIME_FORM = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div[2]')
     TIME_ITEM_ASAP = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div[2]/div[1]/div/div[3]/label')
     TIME_ITEM_DETAILED = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div[2]/div[1]/div/div[4]/label')
+    TIME_ITEM_RECEIVER = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div[2]/div[1]/div/div[5]/label')
     TIME_TOMORROW = (By.XPATH, '//*[@id="slider_3"]/div[1]/div[2]')
-    TIME_WHEN = (By.XPATH, '/html/body/div[4]/div[1]/div[1]/ul/li[31]')
+    TIME_TOMORROW_TEXT = (By.XPATH, '//*[@id="slider_3"]/div[1]/div[2]/div/div[1]')
+    TIME_WHEN_ITEM = (By.XPATH, '/html/body/div[4]/div[1]/div[1]/ul/li[1]')
+    TIME_WHEN_LIST = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div[2]/div[1]/div/div[4]/div/div[2]/div[2]')
     TIME_SAVE_BUTTON = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div[2]/div[2]/button')
 
 class MainPageLocators():

@@ -128,42 +128,26 @@ class BasePage():
         for i in symbols:
             search_string.click()
             search_string.send_keys(i)
-    
+
     def maximize_window(self):
         self.browser.maximize_window()
     
     def resize_window(self, width, height):
         self.browser.set_window_size(width, height)
 
+    def save_selected_time(self):
+        self.is_clickable(*BasePageLocators.TIME_SAVE_BUTTON).click()
+
     def select_address_from_list(self, address):
         self.is_visible(*BasePageLocators.ADDRESS_LIST)
         assert self.element_text_is(*BasePageLocators.ADDRESS_FIRST_ITEM, address)
         address_item = self.is_clickable(*BasePageLocators.ADDRESS_FIRST_ITEM)
         address_item.click()
-
-    def select_all_pairs_time(self, time):
-        time_item = self.is_clickable(By.XPATH, f'//*[@id="grid"]/header/div/header/div/div[1]/div[2]/div[1]/div/div[{time}]/label')
-        time_item.click()
-    
-    def select_time_asap(self):
-        self.is_clickable(*BasePageLocators.TIME_ITEM_ASAP).click()
-
-    def select_time_detailed(self):
-        self.is_clickable(*BasePageLocators.TIME_ITEM_DETAILED).click()
+        
+    def select_day(self):
         self.is_clickable(*BasePageLocators.TIME_TOMORROW).click()
-        self.is_clickable(*BasePageLocators.TIME_WHEN).click()
-
-    def save_selected_time(self):
-        self.is_clickable(*BasePageLocators.TIME_SAVE_BUTTON).click()
-
-    def set_time_allpairs(self, time):
-        self.select_all_pairs_time(time)
-        self.save_selected_time()
-
-    def set_time_asap(self):
-        self.select_time_asap()
-        self.save_selected_time()
-
+        return self.is_visible(*BasePageLocators.TIME_TOMORROW_TEXT).text
+    
     def select_popular_request(self):
         search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
         search_string.click()
@@ -173,6 +157,20 @@ class BasePage():
     def select_recommendation(self):
         recommendation = self.is_clickable(*BasePageLocators.RECOMMENDATION_SECOND)
         return recommendation
+
+    def select_time_asap(self):
+        self.is_clickable(*BasePageLocators.TIME_ITEM_ASAP).click()
+
+    def select_time_detailed(self):
+        self.is_clickable(*BasePageLocators.TIME_ITEM_DETAILED).click()
+
+    def select_time_period(self):
+        self.is_clickable(*BasePageLocators.TIME_WHEN_LIST).click()
+        self.is_clickable(*BasePageLocators.TIME_WHEN_ITEM).click()
+        return self.is_clickable(*BasePageLocators.TIME_WHEN_ITEM).text
+
+    def select_time_receiver(self):
+        self.is_clickable(*BasePageLocators.TIME_ITEM_RECEIVER).click()
 
     def select_shop_recommendation(self):
         shop_recommendation = self.is_clickable(*BasePageLocators.RECOMMENDATION_SHOP)
@@ -195,9 +193,17 @@ class BasePage():
         setted_address = self.is_visible(*BasePageLocators.ADDRESS_BUTTON)
         assert setted_address.text == f'Казань, {address}, {house}', 'Setted address incorrect'
         
-    def should_be_setted_time(self):
+    def should_be_setted_time_asap(self):
         setted_time = self.is_visible(*BasePageLocators.TIME_BUTTON)
         assert setted_time.text == f'Как можно скорее', 'Time settings incorrect'
+
+    def should_be_setted_time_detailed(self, day, time):
+        setted_time = self.is_visible(*BasePageLocators.TIME_BUTTON)
+        assert setted_time.text == f'{day}, {time}', 'Time settings incorrect'
+
+    def should_be_setted_time_receiver(self, day):
+        setted_time = self.is_visible(*BasePageLocators.TIME_BUTTON)
+        assert setted_time.text == f'{day}, время согласуем', 'Time settings incorrect'
 
     def should_be_page_title(self, page_title):
         assert self.title_is(page_title), 'Page title incorrect'
@@ -236,14 +242,20 @@ class BasePage():
     def should_switch_to_shops(self):
         switch_to_shops = self.is_visible(*BasePageLocators.SWITCH_TO_SHOPS)
         switch_to_shops.click()
-        #self.url_changed()
-        #assert self.url_contains("all-shops"), 'Did not switch to shops'
             
     def start_search_by_request(self, search_request):
-        self.insert_search_request(search_request)
         search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
+        symbols = list(search_request)
+        for i in symbols:
+            search_string.click()
+            search_string.send_keys(i)
         search_string.send_keys(Keys.ENTER)
     
+    def start_search_by_request(self, search_request):
+        search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
+        search_string.send_keys(search_request)
+        search_string.send_keys(Keys.ENTER)
+   
     def switch_to_shop_window(self):
         shop_window = self.browser.window_handles[1]
         self.browser.switch_to.window(shop_window)
