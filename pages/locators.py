@@ -24,6 +24,16 @@ class BasePageLocators():
     SEARCH_INPUT = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[2]/div[1]/div[1]/div/div[2]/label')
     SWITCH_TO_SHOPS = (By.XPATH, '//*[@id="js-switcher-shops"]')
     SEARCHED_SHOP_ITEM = (By.XPATH, '//*[@id="searched-shops"]/li/a')
+    TIME_BUTTON = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div/div/div[1]')
+    TIME_FORM = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div[2]')
+    TIME_ITEM_ASAP = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div[2]/div[1]/div/div[3]/label')
+    TIME_ITEM_DETAILED = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div[2]/div[1]/div/div[4]/label')
+    TIME_ITEM_RECEIVER = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div[2]/div[1]/div/div[5]/label')
+    TIME_TOMORROW = (By.XPATH, '//*[@id="slider_3"]/div[1]/div[2]')
+    TIME_TOMORROW_TEXT = (By.XPATH, '//*[@id="slider_3"]/div[1]/div[2]/div/div[1]')
+    TIME_WHEN_ITEM = (By.XPATH, '/html/body/div[4]/div[1]/div[1]/ul/li[1]')
+    TIME_WHEN_LIST = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div[2]/div[1]/div/div[4]/div/div[2]/div[2]')
+    TIME_SAVE_BUTTON = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div[2]/div[2]/button')
 
 class MainPageLocators():
     ADDRESS_BUTTON = (By.XPATH, '//*[@id="grid"]/header/div/header/div/div[1]/div/div/div[2]')
@@ -38,6 +48,8 @@ class CategoryPageLocators():
     PRODUCT_DETAILS_CONTENT = (By.XPATH, '//*[@id="grid"]/section/div/div/div[2]/div[1]/div')
     SUBCATEGORY_MONOBOUQETS_BUTTON = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[1]/div/div[1]')
     SUBCATEGORY_MONOBOUQETS_LINK = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[1]/div/div[1]/a')
+    SUBCATEGORY_BOXES_BUTTON = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[1]/div/div[2]')
+    SUBCATEGORY_BOXES_LINK = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[1]/div/div[2]/a')
     SWITCH_TO_PRODUCTS = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[1]/div/div[2]/span[1]')
     SWITCH_TO_SHOPS = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[1]/div[1]/div[2]/span[2]')
     

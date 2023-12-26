@@ -13,7 +13,15 @@ class CategoryPage(BasePage):
         self.has_disappeared(*CategoryPageLocators.PRODUCT_DETAILS_CONTENT)
         add_to_cart_button = self.is_clickable(*CategoryPageLocators.ADD_TO_CART_BUTTON)
         add_to_cart_button.click()
+    
+    def click_product(self):
+        product = self.is_clickable(*CategoryPageLocators.PRODUCT_FIRST)
+        product.click()
 
+    def click_subcategory(self):
+        subcategory_button = self.is_clickable(*CategoryPageLocators.SUBCATEGORY_BOXES_BUTTON)
+        subcategory_button.click()
+    
     def get_page_topic(self):
         page_title = self.is_visible(*CategoryPageLocators.PAGE_TITLE)
         return page_title.text
@@ -47,22 +55,14 @@ class CategoryPage(BasePage):
         assert self.get_product_card_title() == product_name, "Product card title incorrect" 
 
     def get_subcategory_title(self):
-        subcategory_info = self.is_visible(*CategoryPageLocators.SUBCATEGORY_MONOBOUQETS_LINK)
+        subcategory_info = self.is_visible(*CategoryPageLocators.SUBCATEGORY_BOXES_LINK)
         subcategory_title = subcategory_info.text
         return subcategory_title 
     
     def get_subcategory_link(self):
-        subcategory_info = self.is_visible(*CategoryPageLocators.SUBCATEGORY_MONOBOUQETS_LINK)
+        subcategory_info = self.is_visible(*CategoryPageLocators.SUBCATEGORY_BOXES_LINK)
         subcategory_link = subcategory_info.get_attribute("href")
         return subcategory_link 
-
-    def click_product(self):
-        product = self.is_clickable(*CategoryPageLocators.PRODUCT_FIRST)
-        product.click()
-
-    def click_subcategory(self):
-        subcategory_button = self.is_clickable(*CategoryPageLocators.SUBCATEGORY_MONOBOUQETS_BUTTON)
-        subcategory_button.click()
 
     def switch_to_subcategory(self):
         subcategory_link = self.get_subcategory_link()
