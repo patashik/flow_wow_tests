@@ -169,9 +169,10 @@ class TestHappyPathChrome():
             category_page = CategoryPage(browser_chrome, browser_chrome.current_url)
         with allure.step("Step 3: switch to product subcategory"):
             #category_page.switch_to_subcategory()
+            category_page.should_be_address_tooltip()
             subcategory_link = category_page.get_subcategory_link()
             subcategory_title = category_page.get_subcategory_title()
-            time.sleep(7)
+            #time.sleep(7)
             category_page.click_subcategory()
             category_page.should_change_url()
             category_page.should_be_correct_url(subcategory_link)

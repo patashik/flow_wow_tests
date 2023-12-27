@@ -10,12 +10,10 @@ import time
 
 class ShopPage(BasePage):
     def go_to_main_page_from_shop_page(self):
-        button = self.is_clickable(*ShopPageLocators.LOGO_BUTTON)
-        button.click()
+        self.is_clickable(*ShopPageLocators.LOGO_BUTTON).click()
 
     def go_to_make_order(self):
-        button = self.is_clickable(*ShopPageLocators.MAKE_ORDER_BUTTON)
-        button.click()
+        self.is_clickable(*ShopPageLocators.MAKE_ORDER_BUTTON).click()
         
     def should_be_cart(self):
         assert self.is_visible(*ShopPageLocators.CART_FORM), 'No cart'

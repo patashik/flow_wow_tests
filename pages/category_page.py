@@ -11,17 +11,14 @@ import time
 class CategoryPage(BasePage):
     def add_to_cart(self):
         self.has_disappeared(*CategoryPageLocators.PRODUCT_DETAILS_CONTENT)
-        add_to_cart_button = self.is_clickable(*CategoryPageLocators.ADD_TO_CART_BUTTON)
-        add_to_cart_button.click()
+        self.is_clickable(*CategoryPageLocators.ADD_TO_CART_BUTTON).click()
     
     def click_product(self):
-        product = self.is_clickable(*CategoryPageLocators.PRODUCT_FIRST)
-        product.click()
+        self.is_clickable(*CategoryPageLocators.PRODUCT_FIRST).click()
 
     def click_subcategory(self):
-        subcategory_button = self.is_clickable(*CategoryPageLocators.SUBCATEGORY_BOXES_BUTTON)
-        subcategory_button.click()
-    
+        self.is_clickable(*CategoryPageLocators.SUBCATEGORY_BOXES_BUTTON).click()
+
     def get_page_topic(self):
         page_title = self.is_visible(*CategoryPageLocators.PAGE_TITLE)
         return page_title.text
@@ -47,6 +44,9 @@ class CategoryPage(BasePage):
         self.should_change_url()
         self.should_be_correct_url(product_link)
         self.should_be_correct_card_title(product_name)
+    
+    def should_be_address_tooltip(self):
+        self.is_visible(*CategoryPageLocators.ADDRESS_TOOLTIP)
     
     def should_be_correct_page_topic(self, subcategory_title):
         assert self.get_page_topic() == f'{subcategory_title} в Казани', "Page title incorrect" 
