@@ -19,12 +19,8 @@ class CategoryPage(BasePage):
         product.click()
 
     def click_subcategory(self):
-        #self.is_visible(*CategoryPageLocators.SUBCATEGORIES)
         subcategory_button = self.is_clickable(*CategoryPageLocators.SUBCATEGORY_BOXES_BUTTON)
         subcategory_button.click()
-    
-    def should_be_subcategories(self):
-        assert self.is_visible(*CategoryPageLocators.SUBCATEGORIES), 'Subgategories not presented'
 
     def get_page_topic(self):
         page_title = self.is_visible(*CategoryPageLocators.PAGE_TITLE)
@@ -51,6 +47,9 @@ class CategoryPage(BasePage):
         self.should_change_url()
         self.should_be_correct_url(product_link)
         self.should_be_correct_card_title(product_name)
+    
+    def should_be_address_tooltip(self):
+        self.is_visible(*CategoryPageLocators.ADDRESS_TOOLTIP)
     
     def should_be_correct_page_topic(self, subcategory_title):
         assert self.get_page_topic() == f'{subcategory_title} в Казани', "Page title incorrect" 

@@ -103,7 +103,7 @@ class BasePage():
             return False
         return True
     
-    def is_clickable(self, how, what, timeout=300):
+    def is_clickable(self, how, what, timeout=30):
         try:
             element = WebDriverWait(self.browser, timeout, 2).until(EC.element_to_be_clickable((how, what)))
         except TimeoutException:
@@ -249,6 +249,7 @@ class BasePage():
         for i in symbols:
             search_string.click()
             search_string.send_keys(i)
+        
         search_string.click()
         search_string.send_keys(Keys.ENTER)
       
@@ -263,7 +264,7 @@ class BasePage():
             return False
         return True
 
-    def url_changes(self, timeout=300):
+    def url_changes(self, timeout=30):
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException).until(EC.url_changes((self.url)))
         except TimeoutException:
