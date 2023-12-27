@@ -31,8 +31,7 @@ class BasePage():
         return True
 
     def accept_cookies(self):
-        ok_cookie_button = self.is_clickable(*BasePageLocators.OK_COOKIE_BUTTON)
-        ok_cookie_button.click()
+        self.is_clickable(*BasePageLocators.OK_COOKIE_BUTTON).click()
         self.has_disappeared(*BasePageLocators.COOKIE_FORM)
     
     def any_of(self, how1, what1, how2, what2, timeout=10):
@@ -55,12 +54,10 @@ class BasePage():
         return True
 
     def click_set_address(self):
-        address_button = self.is_clickable(*BasePageLocators.ADDRESS_BUTTON)
-        address_button.click()
+        self.is_clickable(*BasePageLocators.ADDRESS_BUTTON).click()
     
     def click_time_settings(self):
-        time_button = self.is_clickable(*BasePageLocators.TIME_BUTTON)
-        time_button.click()
+        self.is_clickable(*BasePageLocators.TIME_BUTTON).click()
 
     def element_text_is(self, how, what, text, timeout=30):
         try:
@@ -72,8 +69,7 @@ class BasePage():
     def fill_short_address_form(self, address):
         self.insert_address(address)
         self.select_address_from_list(address)
-        accept_button = self.is_clickable(*BasePageLocators.ADDRESS_ACCEPT_BUTTON)
-        accept_button.click()
+        self.is_clickable(*BasePageLocators.ADDRESS_ACCEPT_BUTTON).click()
     
     def fill_detailed_address_form(self, house, office, comment):
         house_form = self.is_clickable(*BasePageLocators.ADDRESS_HOUSE)
@@ -89,12 +85,10 @@ class BasePage():
         accept_button.click()
           
     def go_to_category_page(self):
-        category = self.is_clickable(*BasePageLocators.CATEGORY_FLOWERS)
-        category.click()
+        self.is_clickable(*BasePageLocators.CATEGORY_FLOWERS).click()
 
     def go_to_main_page(self):
-        logo_button = self.is_clickable(*BasePageLocators.LOGO_BUTTON)
-        logo_button.click()
+        self.is_clickable(*BasePageLocators.LOGO_BUTTON).click()
 
     def has_disappeared(self, how, what, timeout=40):
         try:
@@ -240,8 +234,7 @@ class BasePage():
         assert self.is_clickable(*BasePageLocators.TIME_FORM), 'Did not open time form'
 
     def should_switch_to_shops(self):
-        switch_to_shops = self.is_visible(*BasePageLocators.SWITCH_TO_SHOPS)
-        switch_to_shops.click()
+        self.is_visible(*BasePageLocators.SWITCH_TO_SHOPS).click()
             
     def start_search_by_request(self, search_request):
         search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)

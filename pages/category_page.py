@@ -11,16 +11,13 @@ import time
 class CategoryPage(BasePage):
     def add_to_cart(self):
         self.has_disappeared(*CategoryPageLocators.PRODUCT_DETAILS_CONTENT)
-        add_to_cart_button = self.is_clickable(*CategoryPageLocators.ADD_TO_CART_BUTTON)
-        add_to_cart_button.click()
+        self.is_clickable(*CategoryPageLocators.ADD_TO_CART_BUTTON).click()
     
     def click_product(self):
-        product = self.is_clickable(*CategoryPageLocators.PRODUCT_FIRST)
-        product.click()
+        self.is_clickable(*CategoryPageLocators.PRODUCT_FIRST).click()
 
     def click_subcategory(self):
-        subcategory_button = self.is_clickable(*CategoryPageLocators.SUBCATEGORY_BOXES_BUTTON)
-        subcategory_button.click()
+        self.is_clickable(*CategoryPageLocators.SUBCATEGORY_BOXES_BUTTON).click()
 
     def get_page_topic(self):
         page_title = self.is_visible(*CategoryPageLocators.PAGE_TITLE)
