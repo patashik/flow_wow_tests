@@ -19,9 +19,13 @@ class CategoryPage(BasePage):
         product.click()
 
     def click_subcategory(self):
+        #self.is_visible(*CategoryPageLocators.SUBCATEGORIES)
         subcategory_button = self.is_clickable(*CategoryPageLocators.SUBCATEGORY_BOXES_BUTTON)
         subcategory_button.click()
     
+    def should_be_subcategories(self):
+        assert self.is_visible(*CategoryPageLocators.SUBCATEGORIES), 'Subgategories not presented'
+
     def get_page_topic(self):
         page_title = self.is_visible(*CategoryPageLocators.PAGE_TITLE)
         return page_title.text

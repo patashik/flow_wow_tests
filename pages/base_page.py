@@ -249,13 +249,9 @@ class BasePage():
         for i in symbols:
             search_string.click()
             search_string.send_keys(i)
+        search_string.click()
         search_string.send_keys(Keys.ENTER)
-    
-    def start_search_by_request(self, search_request):
-        search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
-        search_string.send_keys(search_request)
-        search_string.send_keys(Keys.ENTER)
-   
+      
     def switch_to_shop_window(self):
         shop_window = self.browser.window_handles[1]
         self.browser.switch_to.window(shop_window)

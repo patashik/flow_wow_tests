@@ -47,6 +47,7 @@ class CategoryPageLocators():
     PRODUCT_FIRST_LINK = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[2]/div/div[1]/div/article[1]/a')
     PRODUCT_DETAILS_CONTENT = (By.XPATH, '//*[@id="grid"]/section/div/div/div[2]/div[1]/div')
     SUBCATEGORY_MONOBOUQETS_BUTTON = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[1]/div/div[1]')
+    SUBCATEGORIES = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[1]/div')
     SUBCATEGORY_MONOBOUQETS_LINK = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[1]/div/div[1]/a')
     SUBCATEGORY_BOXES_BUTTON = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[1]/div/div[2]')
     SUBCATEGORY_BOXES_LINK = (By.XPATH, '//*[@id="grid"]/section/div/div/div[5]/div[2]/div[1]/div/div[2]/a')
