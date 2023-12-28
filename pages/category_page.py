@@ -19,6 +19,16 @@ class CategoryPage(BasePage):
     def click_subcategory(self):
         self.is_clickable(*CategoryPageLocators.SUBCATEGORY_BOXES_BUTTON).click()
 
+    def filter_flowers_by_search_request(self, search_request):
+        self.is_clickable(*CategoryPageLocators.FILTER_FLOWERS_BUTTON).click()
+        search_string = self.is_clickable(*CategoryPageLocators.FILTER_SEARCH_STRING)
+        search_string.send_keys(search_request)
+        assert self.element_text_is(*CategoryPageLocators.FILTER_FLOWERS_ITEM, search_request)
+        self.is_clickable(*CategoryPageLocators.FILTER_FLOWERS_ITEM).click()
+        self.should_be_seletected_item()
+        self.should_be_text_in_selected_item(search_request)
+        self.is_clickable(*CategoryPageLocators.FILTER_FLOWERS_SHOW_BUTTON).click()
+
     def get_page_topic(self):
         page_title = self.is_visible(*CategoryPageLocators.PAGE_TITLE)
         return page_title.text
@@ -37,6 +47,16 @@ class CategoryPage(BasePage):
         product_name = product_name.text
         return product_name
     
+    def get_subcategory_title(self):
+        subcategory_info = self.is_visible(*CategoryPageLocators.SUBCATEGORY_BOXES_LINK)
+        subcategory_title = subcategory_info.text
+        return subcategory_title 
+    
+    def get_subcategory_link(self):
+        subcategory_info = self.is_visible(*CategoryPageLocators.SUBCATEGORY_BOXES_LINK)
+        subcategory_link = subcategory_info.get_attribute("href")
+        return subcategory_link 
+
     def select_product(self):            
         product_name = self.get_product_name()
         product_link = self.get_product_link()
@@ -48,21 +68,20 @@ class CategoryPage(BasePage):
     def should_be_address_tooltip(self):
         self.is_visible(*CategoryPageLocators.ADDRESS_TOOLTIP)
     
+    def should_be_clear_filters_button(self):
+        assert self.is_visible(*CategoryPageLocators.CLEAR_FILTERS), 'No clear filters button'
+
     def should_be_correct_page_topic(self, subcategory_title):
         assert self.get_page_topic() == f'{subcategory_title} в Казани', "Page title incorrect" 
 
     def should_be_correct_card_title(self, product_name):
         assert self.get_product_card_title() == product_name, "Product card title incorrect" 
 
-    def get_subcategory_title(self):
-        subcategory_info = self.is_visible(*CategoryPageLocators.SUBCATEGORY_BOXES_LINK)
-        subcategory_title = subcategory_info.text
-        return subcategory_title 
-    
-    def get_subcategory_link(self):
-        subcategory_info = self.is_visible(*CategoryPageLocators.SUBCATEGORY_BOXES_LINK)
-        subcategory_link = subcategory_info.get_attribute("href")
-        return subcategory_link 
+    def should_be_seletected_item(self):
+        assert self.is_visible(*CategoryPageLocators.FILTER_FLOWERS_SELECTED_ITEM), 'Filter item not selected'
+
+    def should_be_text_in_selected_item(self, search_request):
+        assert self.element_text_is(*CategoryPageLocators.FILTER_FLOWERS_SELECTED_ITEM, search_request), 'Should be text in filter'
 
     def switch_to_subcategory(self):
         subcategory_link = self.get_subcategory_link()
