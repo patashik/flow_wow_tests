@@ -84,7 +84,29 @@ class TestHappyPathChrome():
             result_page = ResultPage(browser_chrome, browser_chrome.current_url)
             result_page.should_be_search_request_in_search_string(recommendation_text)
             result_page.should_be_any_result_message()
-                
+
+    @pytest.mark.flower
+    @allure.story("Search")
+    @allure.sub_suite("Search")
+    @allure.title("Search product by filter")
+    def test_search_product_by_filter (self, browser_chrome):
+        search_request = "Альстромерии"
+        link = "https://flowwow.com/kazan/all-products/" 
+        with allure.step("Step 1: open main page"):
+            main_page = BasePage(browser_chrome, link)
+            main_page.open()
+            main_page.accept_cookies()
+        with allure.step("Step 2: open flowers category page"):
+            main_page.go_to_category_page()
+            main_page.should_change_url()
+            main_page.should_open_category_page()
+            category_page = CategoryPage(browser_chrome, browser_chrome.current_url)
+        with allure.step("Step 3: apply filter"):
+            category_page.filter_flowers_by_search_request(search_request)
+        with allure.step("Step 4: show search results"):
+            category_page.should_change_url()
+            category_page.should_be_clear_filters_button()
+
     @pytest.mark.shop
     @allure.story("Search")
     @allure.sub_suite("Search")

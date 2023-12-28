@@ -115,7 +115,7 @@ class BasePage():
         address_input = self.is_clickable(*BasePageLocators.ADDRESS_INPUT)
         address_input.click()
         address_input.send_keys(address)
-   
+       
     def insert_search_request(self, search_request):
         search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
         symbols = list(search_request)
@@ -130,6 +130,7 @@ class BasePage():
         self.browser.set_window_size(width, height)
 
     def save_selected_time(self):
+        self.has_disappeared(*BasePageLocators.TIME_WHEN_LIST)
         self.is_clickable(*BasePageLocators.TIME_SAVE_BUTTON).click()
 
     def select_address_from_list(self, address):
@@ -235,14 +236,14 @@ class BasePage():
 
     def should_switch_to_shops(self):
         self.is_visible(*BasePageLocators.SWITCH_TO_SHOPS).click()
-            
+
     def start_search_by_request(self, search_request):
         search_string = self.is_clickable(*BasePageLocators.SEARCH_STRING)
         symbols = list(search_request)
         for i in symbols:
             search_string.click()
             search_string.send_keys(i)
-        
+
         search_string.click()
         search_string.send_keys(Keys.ENTER)
       
